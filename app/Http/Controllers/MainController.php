@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\URL;
+use Illuminate\View\View;
 
 class MainController extends Controller
 {
@@ -10,16 +11,25 @@ class MainController extends Controller
 
 	public function index() {
 		// REDIRECT IF NOT LOGGED IN
+
+		// TODO : Returns the Main JS Application (SPA)
+
 		return redirect( '/login' );
 	}
 
-	public function login() {
+	/**
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function login() : View{
 
 		return $this->buildView( self::LOGIN_ROOT_VIEW_FOLDER, __FUNCTION__ );
 
 	}
 
-	public function logout() {
+	/**
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function logout() : View {
 
 		return $this->buildView( self::LOGIN_ROOT_VIEW_FOLDER, __FUNCTION__ );
 
@@ -31,7 +41,7 @@ class MainController extends Controller
 	 *
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
-	protected function buildView( string $folder, string $viewName ) {
+	protected function buildView( string $folder, string $viewName ) : View {
 
 		$appName      = env( 'APP_NAME', 'VenueManager' );
 		$env          = URL::to( "/" );
