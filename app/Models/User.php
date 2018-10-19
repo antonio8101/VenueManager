@@ -107,11 +107,14 @@ class User extends UserModel {
 	 */
 	public static function create( User $user ){
 
+		$role = $user->role;
+
 		$model = UserModel::create( [
 			'firstName'  => $user->firstName,
 			'lastName'   => $user->lastName,
 			'email'      => $user->email,
 			'birth_date' => $user->birthDate,
+			'role_id'    => is_null($role) ? null : $role->id,
 			'password'   => Hash::make( $user->password )
 		] );
 

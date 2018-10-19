@@ -28,9 +28,9 @@ class AuthServiceProvider extends ServiceProvider
 
         Auth::viaRequest('custom-token', function($request) {
 
-        	$header = $request->bearerToken();
+        	$token = $request->bearerToken();
 
-        	return UserModel::where('password', $header)->first();
+        	return UserModel::where('password', $token)->first();
 
         });
     }

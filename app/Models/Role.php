@@ -57,7 +57,7 @@ class Role extends RoleModel {
 
 		}
 
-		$role = RoleFactory::get( $model->name, $permissions );
+		$role = RoleFactory::get( $model->name, $permissions, $model->id );
 
 		return $role;
 

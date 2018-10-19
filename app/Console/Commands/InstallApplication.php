@@ -65,21 +65,11 @@ class InstallApplication extends Command
 		$name      = $this->askDataToInstallerClient( 'Give FirstName' );
 		$lastName  = $this->askDataToInstallerClient( 'Give LastName' );
 		$birthDate = Carbon::create( 1970, 01, 01 );
-		$role      = Role::find(RoleModel::where( 'name', $adminRole )->first()->id);
+		$role      = Role::find( RoleModel::where( 'name', $adminRole )->first()->id );
 
-		$user = UserFactory::get($name, $lastName, $password, $email, $birthDate, $role);
+		$user      = UserFactory::get( $name, $lastName, $password, $email, $birthDate, $role );
 
 		User::create( $user );
-
-//		DB::table( 'users' )->insert( [
-//			'firstName'         => $name,
-//			'lastName'          => $lastName,
-//			'birth_date'        => $birthDate,
-//			'email'             => $email,
-//			'role_id'           => $roleId,
-//			'password'          => $password,
-//			'password_to_reset' => true
-//		] );
 
 		$this->info( "Application installed successfully" );
 
