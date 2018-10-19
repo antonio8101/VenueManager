@@ -9,7 +9,9 @@ class UserController extends ApiBase
 {
 
     public function __construct() {
-    	// User Validation
+
+    	$this->middleware('auth-api');
+
     }
 
     public function getUsersQuery(){

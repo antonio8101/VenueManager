@@ -12,6 +12,8 @@ class VenueController extends ApiBase
 
     public function __construct(VenueFactory $factory) {
 
+	    $this->middleware('auth-api');
+
 	    $this->factory = $factory;
 
     }
