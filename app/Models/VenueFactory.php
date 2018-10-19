@@ -12,23 +12,23 @@ namespace App\Models;
 class VenueFactory {
 
 	/**
-	 * @param $name
-	 * @param Address $address
+	 * @param array $data
 	 * @param null $id
 	 *
 	 * @return Venue
 	 */
-	public static function get( $name, Address $address, $id = null ): Venue {
+	public function get( $data = array(), $id = null ) {
 
 		$venue = new Venue();
 
-		$venue->name = $name;
+		$venue->name = $data['name'];
 
-		$venue->setAddress( $address );
+		$venue->setAddress( $data['address'] );
 
 		$venue->id = $id;
 
 		return $venue;
+
 	}
 
 }

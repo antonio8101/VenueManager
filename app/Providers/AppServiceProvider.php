@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\VenueFactory;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +24,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+	    $this->app->bind('VenueFactory', function() {
+
+	    	return new VenueFactory();
+
+	    });
+
     }
+
+
 }

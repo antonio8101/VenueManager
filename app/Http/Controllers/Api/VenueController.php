@@ -8,8 +8,12 @@ use App\Models\VenueFactory;
 
 class VenueController extends ApiBase
 {
-    public function __construct() {
-    	// User Validation
+	private $factory;
+
+    public function __construct(VenueFactory $factory) {
+
+	    $this->factory = $factory;
+
     }
 
     public function getVenuesQuery(){
@@ -24,28 +28,53 @@ class VenueController extends ApiBase
 
     }
 
-    public function createVenueCommand($venueData = []){
+	/**
+	 * API - Command : Creates a new Venue
+	 *
+	 * @param array $venueData
+	 *
+	 * @return $this
+	 */
+	public function createVenueCommand( $venueData = [] ) {
 
-    	$name = $venueData['name'];
+		$name = $venueData['name'];
 
-    	$address = new Address();
+		$address = $this->InflateObject( $venueData, new Address() );
 
-    	// GET ALL THE ADDRESS PROPERTY FROM PAYLOAD
-    	foreach ($address as $key=>$value){
-    		if (! empty($venueData[$key])) {
-			    $address->$key = $venueData[$key];
-		    }
-	    }
+		$venue = $this->factory->get( [ 'name' => $name, 'address' => $address ] );
 
-    	$venue = VenueFactory::get($name, $address);
+		$venue->save();
 
-    	Venue::create( $venue );
+		return $this->goodResponse( "Venue entry stored correctly" );
 
-    	return $this->goodResponse("Venue entry stored correctly with id <>");
-    }
+	}
 
     public function editVenueCommand($venueData = [], string $venueId){
-    	//
+
+		//
+
     }
+
+	/**
+	 * Inflates the given object with the given array of values (matching its property)
+	 * @param array $data
+	 * @param object $object
+	 *
+	 * @return object
+	 */
+	public function InflateObject( $data = array(), $object ) {
+
+		foreach ( $object as $key => $value ) {
+
+			if ( ! empty( $data[ $key ] ) ) {
+
+				$object->$key = $data[ $key ];
+
+			}
+
+		}
+
+		return $object;
+	}
 
 }
