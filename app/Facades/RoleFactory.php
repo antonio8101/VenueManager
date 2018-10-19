@@ -2,22 +2,23 @@
 /**
  * Created by PhpStorm.
  * User: Antonio
- * Date: 14/10/2018
- * Time: 20:32
+ * Date: 20/10/2018
+ * Time: 00:12
  */
 
 namespace App\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class VenueFactory extends Facade {
+class RoleFactory extends Facade {
 
 	/**
 	 * Get the registered name of the component.
 	 *
 	 * @return string
 	 */
-	protected static function getFacadeAccessor() { return 'VenueFactory'; }
+	protected static function getFacadeAccessor() {
+		return 'RoleFactory';
+	}
 
 }
-

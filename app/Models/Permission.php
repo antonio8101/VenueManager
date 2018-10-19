@@ -14,4 +14,22 @@ class Permission extends PermissionModel {
 
 	public $name;
 
+	/**
+	 * @param string $id
+	 *
+	 * @return Permission
+	 */
+	public static function find( string $id ): Permission {
+
+		$model = PermissionModel::find( $id );
+
+		$permission = new Permission();
+
+		$permission->id   = $model->id;
+		$permission->name = $model->name;
+
+		return $permission;
+
+	}
+
 }

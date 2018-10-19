@@ -29,7 +29,7 @@ class UsersRolePermissions extends Migration
 	        $table->string('lastName');
 	        $table->date('birth_date');
 	        $table->date('last_activity')->nullable();
-	        $table->boolean('password_to_reset');
+	        $table->boolean('password_to_reset')->nullable();
 	        $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

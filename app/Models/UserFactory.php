@@ -9,6 +9,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class UserFactory {
 
@@ -30,10 +31,11 @@ class UserFactory {
 
 		$user->firstName = $firstName;
 		$user->lastName  = $lastName;
-		$user->password  = $password;
 		$user->setEmail( $email );
 		$user->setBirthDate( $birthDate );
 		$user->setRole( $role );
+
+		$user->password  = Hash::make($password);
 
 		if ( $lastActivity != null ) {
 			$user->setLastActivity( $lastActivity );

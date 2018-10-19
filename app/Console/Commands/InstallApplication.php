@@ -2,12 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\Facades\UserFactory;
 use App\GlobalConsts;
+use App\Models\Role;
 use App\Models\RoleModel;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 
 class InstallApplication extends Command
 {
@@ -25,11 +27,9 @@ class InstallApplication extends Command
      */
     protected $description = 'This command will run all the necessary steps to install the db';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
+	/**
+	 * Create a new command instance.
+	 */
     public function __construct()
     {
         parent::__construct();
@@ -65,17 +65,21 @@ class InstallApplication extends Command
 		$name      = $this->askDataToInstallerClient( 'Give FirstName' );
 		$lastName  = $this->askDataToInstallerClient( 'Give LastName' );
 		$birthDate = Carbon::create( 1970, 01, 01 );
-		$roleId    = RoleModel::where( 'name', $adminRole )->first()->id;
+		$role      = Role::find(RoleModel::where( 'name', $adminRole )->first()->id);
 
-		DB::table( 'users' )->insert( [
-			'firstName'         => $name,
-			'lastName'          => $lastName,
-			'birth_date'        => $birthDate,
-			'email'             => $email,
-			'role_id'           => $roleId,
-			'password'          => $password,
-			'password_to_reset' => true
-		] );
+		$user = UserFactory::get($name, $lastName, $password, $email, $birthDate, $role);
+
+		User::create( $user );
+
+//		DB::table( 'users' )->insert( [
+//			'firstName'         => $name,
+//			'lastName'          => $lastName,
+//			'birth_date'        => $birthDate,
+//			'email'             => $email,
+//			'role_id'           => $roleId,
+//			'password'          => $password,
+//			'password_to_reset' => true
+//		] );
 
 		$this->info( "Application installed successfully" );
 

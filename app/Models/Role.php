@@ -8,6 +8,7 @@
 
 namespace App\Models;
 
+use App\Facades\RoleFactory;
 use Illuminate\Support\Collection;
 
 class Role extends RoleModel {
@@ -33,6 +34,33 @@ class Role extends RoleModel {
 		// TODO : Must be an array of Permissions
 
 		$this->permissions = $permissions;
+	}
+
+	/**
+	 * @param string $id
+	 *
+	 * @return Role
+	 */
+	public static function find( string $id ): Role {
+
+		$model = RoleModel::find( $id );
+
+		$permissions = new Collection();
+
+		$rolePermissions = RolesPermissions::where( 'role_id', $model->id )->get();
+
+		foreach ( $rolePermissions as $rolePermission ) {
+
+			$permission = Permission::find( $rolePermission->permission_id );
+
+			$permissions->push( $permission );
+
+		}
+
+		$role = RoleFactory::get( $model->name, $permissions );
+
+		return $role;
+
 	}
 
 }

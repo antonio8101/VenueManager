@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\RoleFactory;
+use App\Models\UserFactory;
 use App\Models\VenueFactory;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,6 +29,16 @@ class AppServiceProvider extends ServiceProvider
 	    $this->app->bind('VenueFactory', function() {
 
 	    	return new VenueFactory();
+
+	    });
+	    $this->app->bind('UserFactory', function(){
+
+	    	return new UserFactory();
+
+	    });
+	    $this->app->bind('RoleFactory', function(){
+
+		    return new RoleFactory();
 
 	    });
 
