@@ -12,5 +12,5 @@
 */
 
 Route::get('/', 'MainController@index');
-Route::get('/login', 'MainController@login');
-Route::get('/logout', 'MainController@logout');
+Route::get('/login', 'MainController@login')->name('login');
+Route::get('/logout', 'MainController@logout')->name('logout');

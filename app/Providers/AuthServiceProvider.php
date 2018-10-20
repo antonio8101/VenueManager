@@ -29,11 +29,19 @@ class AuthServiceProvider extends ServiceProvider
 
         Auth::viaRequest('custom-token', function($request) {
 
-        	$token = $request->bearerToken();
+        	try {
 
-        	$loginTable = LoginTable::findBy( 'token', $token );
+		        $token = $request->bearerToken();
 
-        	return UserModel::find( $loginTable->user->id );
+		        $loginTable = LoginTable::findBy( 'token', $token );
+
+		        return UserModel::find( $loginTable->user->id );
+
+	        } catch (\Exception $e) {
+
+        		return null;
+
+	        }
 
         });
     }
