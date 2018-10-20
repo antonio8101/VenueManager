@@ -8,7 +8,9 @@
 
 namespace App\Models;
 
-class Permission extends PermissionModel {
+use JsonSerializable;
+
+class Permission extends PermissionModel implements JsonSerializable {
 
 	public $id;
 
@@ -30,6 +32,15 @@ class Permission extends PermissionModel {
 
 		return $permission;
 
+	}
+
+	public function jsonSerialize() {
+		return [
+			'Permission' => [
+				'id'           => $this->id,
+				'firstName'    => $this->name
+			]
+		];
 	}
 
 }

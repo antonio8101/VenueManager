@@ -10,14 +10,28 @@ namespace App\Models;
 
 use App\Facades\RoleFactory;
 use Illuminate\Support\Collection;
+use JsonSerializable;
 
-class Role extends RoleModel {
+class Role extends RoleModel implements JsonSerializable {
+
+
+
 
 	public $id;
 
 	public $name;
 
 	public $permissions;
+
+	public function jsonSerialize() {
+		return [
+			'Role' => [
+				'id'          => $this->id,
+				'name'        => $this->name,
+				'permissions' => $this->permissions
+			]
+		];
+	}
 
 	/**
 	 * @return Collection

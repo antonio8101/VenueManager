@@ -12,8 +12,9 @@ namespace App\Models;
 use App\Facades\UserFactory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use JsonSerializable;
 
-class User extends UserModel {
+class User extends UserModel implements JsonSerializable {
 
 	// STRING TYPES
 
@@ -29,7 +30,33 @@ class User extends UserModel {
 
 	/** TO BE VALIDATED FIELDS **/
 
-	private $email;
+	public $email;
+
+	/** STRONGLY TYPED FIELD */
+
+	public $birthDate;
+
+	public $lastActivity;
+
+	public $created;
+
+	public $updated;
+
+	public function jsonSerialize() {
+		return [
+			'User' => [
+				'id'           => $this->id,
+				'firstName'    => $this->firstName,
+				'lastName'     => $this->lastName,
+				'email'        => $this->email,
+				'birthDate'    => $this->birthDate,
+				'role'         => $this->role,
+				'lastActivity' => $this->lastActivity,
+				'created'      => $this->created,
+				'updated'      => $this->updated,
+			]
+		];
+	}
 
 	/**
 	 * @return string
@@ -47,10 +74,6 @@ class User extends UserModel {
 
 		$this->email = $email;
 	}
-
-	/** STRONGLY TYPED FIELD */
-
-	private $birthDate;
 
 	/**
 	 * @return Carbon
@@ -81,9 +104,6 @@ class User extends UserModel {
 	public function setRole( Role $role ): void {
 		$this->role = $role;
 	}
-
-
-	public $lastActivity;
 
 	/**
 	 * @return Carbon
@@ -140,6 +160,8 @@ class User extends UserModel {
 			$model->email, Carbon::parse($model->birth_date), $role);
 
 		$user->id = $id;
+		$user->created = $model->created_at;
+		$user->updated = $model->updated_at;
 
 		return $user;
 

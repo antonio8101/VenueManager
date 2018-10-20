@@ -35,6 +35,7 @@ class ApiBase extends Controller {
 	 * @return $this
 	 */
 	protected function goodResponse( $data ) {
+
 		$message = json_encode( [ "isValid" => true, "data" => $data ] );
 
 		return response( $message, 200 )->header(

@@ -22,7 +22,9 @@ class UserController extends ApiBase
 
     	$user = User::find($id);
 
-    	return $this->goodResponse($user);
+
+
+    	return $this->goodResponse( $user );
 
     }
 
