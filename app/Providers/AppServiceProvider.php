@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\LoginTableFactory;
 use App\Models\RoleFactory;
 use App\Models\UserFactory;
 use App\Models\VenueFactory;
@@ -24,21 +25,29 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
-    {
+    public function register() {
+
 	    $this->app->bind('VenueFactory', function() {
 
 	    	return new VenueFactory();
 
 	    });
+
 	    $this->app->bind('UserFactory', function(){
 
 	    	return new UserFactory();
 
 	    });
+
 	    $this->app->bind('RoleFactory', function(){
 
 		    return new RoleFactory();
+
+	    });
+
+	    $this->app->bind('LoginTableFactory', function(){
+
+		    return new LoginTableFactory();
 
 	    });
 

@@ -9,6 +9,7 @@
 
 namespace App\Models;
 
+use App\Facades\UserFactory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 
@@ -119,6 +120,29 @@ class User extends UserModel {
 		] );
 
 		return $model->id;
+	}
+
+	/**
+	 * Finds a User by id
+	 *
+	 * @param string $id
+	 *
+	 * @return User
+	 */
+	public static function find(string $id) : User{
+
+		$model = UserModel::find($id);
+
+		$role = Role::find($model->role_id);
+
+		$user = UserFactory::get(
+			$model->firstName, $model->lastName, $model->password,
+			$model->email, Carbon::parse($model->birth_date), $role);
+
+		$user->id = $id;
+
+		return $user;
+
 	}
 
 }

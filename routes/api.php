@@ -17,4 +17,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('/venue/get/{id}', 'Api\VenueController@getOneVenueQuery');
-Route::get('/user/get/{id}', 'Api\UserController@getOneUserQuery');
+Route::get('/user/get/{id}', 'Api\UserController@getOneUserQuery')->middleware('auth:api');

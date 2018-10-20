@@ -2,8 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Facades\LoginTableFactory;
 use App\Facades\UserFactory;
 use App\GlobalConsts;
+use App\Models\LoginTable;
+use App\Models\LoginTableModel;
 use App\Models\Role;
 use App\Models\RoleModel;
 use App\Models\User;
@@ -68,8 +71,12 @@ class InstallApplication extends Command
 		$role      = Role::find( RoleModel::where( 'name', $adminRole )->first()->id );
 
 		$user      = UserFactory::get( $name, $lastName, $password, $email, $birthDate, $role );
+		$userId    = User::create( $user );
+		$user->id  = $userId;
 
-		User::create( $user );
+		$loginTable = LoginTableFactory::get( $user );
+
+		LoginTable::create( $loginTable );
 
 		$this->info( "Application installed successfully" );
 

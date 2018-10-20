@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\LoginTable;
 use App\Models\UserModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -30,7 +31,9 @@ class AuthServiceProvider extends ServiceProvider
 
         	$token = $request->bearerToken();
 
-        	return UserModel::where('password', $token)->first();
+        	$loginTable = LoginTable::findBy( 'token', $token );
+
+        	return UserModel::find( $loginTable->user->id );
 
         });
     }

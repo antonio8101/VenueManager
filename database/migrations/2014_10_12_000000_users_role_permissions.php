@@ -54,6 +54,18 @@ class UsersRolePermissions extends Migration
 		    $table->foreign('permission_id')->references('id')->on('permissions');
 	    });
 
+	    Schema::create('login_table', function (Blueprint $table) {
+		    $table->increments('id');
+		    $table->boolean('active');
+		    $table->string('token');
+		    $table->unsignedInteger('user_id');
+		    $table->timestamps();
+	    });
+
+	    Schema::table('login_table', function($table) {
+		    $table->foreign('user_id')->references('id')->on('users');
+	    });
+
     }
 
     /**
@@ -63,6 +75,7 @@ class UsersRolePermissions extends Migration
      */
     public function down()
     {
+	    Schema::dropIfExists('login_table');
 	    Schema::dropIfExists('users');
 	    Schema::dropIfExists('roles_permissions');
 	    Schema::dropIfExists('roles');
