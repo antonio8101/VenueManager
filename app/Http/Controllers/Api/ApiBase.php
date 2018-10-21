@@ -17,7 +17,7 @@ class ApiBase extends Controller {
 	 * @param string $httpStatusCode
 	 * @param string $message
 	 *
-	 * @return $this
+	 * @return response
 	 */
 	protected function badResponse( string $httpStatusCode, string $message ) {
 		$message = json_encode( [ "isValid" => false, "message" => $message ] );
@@ -32,7 +32,7 @@ class ApiBase extends Controller {
 	/**
 	 * @param $data
 	 *
-	 * @return $this
+	 * @return response
 	 */
 	protected function goodResponse( $data ) {
 

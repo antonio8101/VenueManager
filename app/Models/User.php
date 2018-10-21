@@ -52,6 +52,27 @@ class User extends UserModel implements JsonSerializable {
 		return bcrypt( $user->password );
 	}
 
+	/**
+	 * @param string $id
+	 * @param $model
+	 *
+	 * @return mixed
+	 */
+	protected static function getFromModel( string $id, $model ) {
+
+		$role = Role::find( $model->role_id );
+
+		$user = UserFactory::get(
+			$model->firstName, $model->lastName, $model->password,
+			$model->email, Carbon::parse( $model->birth_date ), $role );
+
+		$user->id      = $id;
+		$user->created = $model->created_at;
+		$user->updated = $model->updated_at;
+
+		return $user;
+	}
+
 	public function jsonSerialize() {
 		return [
 			'User' => [
@@ -144,22 +165,14 @@ class User extends UserModel implements JsonSerializable {
 	 *
 	 * @return User
 	 */
-	public static function find(string $id) : User{
+	public static function find(string $id) {
 
 		$model = UserModel::find($id);
 
-		$role = Role::find($model->role_id);
+		if (is_null($model))
+			return null;
 
-		$user = UserFactory::get(
-			$model->firstName, $model->lastName, $model->password,
-			$model->email, Carbon::parse($model->birth_date), $role);
-
-		$user->id = $id;
-		$user->created = $model->created_at;
-		$user->updated = $model->updated_at;
-
-		return $user;
-
+		return self::getFromModel( $id, $model);
 	}
 
 	public function logout(){
@@ -198,6 +211,47 @@ class User extends UserModel implements JsonSerializable {
 		}
 
 	}
+
+
+	/**
+	 * Gets a User list
+	 * Filters per Roles
+	 *
+	 * @param array $params
+	 *
+	 * @return mixed
+	 */
+	public static function getList( $params = array() ){
+
+		$skip  = $params['skip'] ?? 0;
+		$take  = $params['take'] ?? 100;
+		$roles = [];
+
+		return UserModel::where( 'id', '>', 0 )
+		                ->where( function ( $query ) use ( $params, $roles ) {
+
+		                	if (isset($params['role'])) {
+
+		                		$role =
+					                ( isset( $roles[ $params['role'] ] ) ) ?
+						                $roles[ $params['role'] ] :
+						                RoleModel::where( 'name', $params['role'] )->first();
+
+				                $query->where( 'role_id', $role->id );
+
+			                }
+
+		                } )
+		                ->skip( $skip )
+		                ->take( $take )
+		                ->get()
+		                ->map( function ( $item ) {
+			                return self::getFromModel( $item->id, $item );
+		                } );
+
+	}
+
+
 
 }
 
