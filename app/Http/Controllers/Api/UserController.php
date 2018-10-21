@@ -11,9 +11,8 @@ class UserController extends ApiBase
 
     public function __construct() {
 
-    	#$this->middleware('auth-api');
+    	$this->middleware('auth:api');
 
-	    #dd('test');
     }
 
 	/**

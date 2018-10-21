@@ -56,7 +56,7 @@ class UsersRolePermissions extends Migration
 		    $table->boolean('active');
 		    $table->string('token')->unique();
 		    $table->unsignedInteger('user_id');
-		    $table->date('last_activity')->nullable();
+		    $table->dateTime('last_activity')->nullable();
 		    $table->unsignedInteger('duration')->default(0);
 		    $table->timestamps();
 	    });

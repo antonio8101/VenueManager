@@ -3,9 +3,12 @@
 namespace App\Providers;
 
 use App\Models\LoginTable;
+use App\Models\SessionExpiredException;
 use App\Models\UserModel;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Log;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -34,10 +37,21 @@ class AuthServiceProvider extends ServiceProvider
 		        $token = $request->bearerToken();
 
 		        $loginTable = LoginTable::findBy( 'token', $token );
+		        $loginTable->nowStoreLastActivity();
 
 		        return UserModel::find( $loginTable->user->id );
 
-	        } catch (\Exception $e) {
+	        }
+	        catch ( SessionExpiredException $e ){
+
+        		Log::error( $e->getMessage() );
+
+        		return null;
+
+	        }
+	        catch ( Exception $e) {
+
+		        Log::error( $e->getMessage() );
 
         		return null;
 

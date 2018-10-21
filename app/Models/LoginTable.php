@@ -8,7 +8,12 @@
 
 namespace App\Models;
 
+use App\GlobalConsts;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Support\Facades\Log;
 use JsonSerializable;
+use Throwable;
 
 class LoginTable extends LoginTableModel implements JsonSerializable {
 
@@ -41,14 +46,14 @@ class LoginTable extends LoginTableModel implements JsonSerializable {
 	 * @param $id
 	 *
 	 * @return LoginTable
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public static function find( $id ){
 
 		$model = LoginTableModel::find( $id );
 
 		if ( is_null( $model ) )
-			throw new \Exception("Token not found");
+			throw new Exception("Token not found");
 
 		$loginTable = new LoginTable();
 
@@ -65,21 +70,23 @@ class LoginTable extends LoginTableModel implements JsonSerializable {
 	 * @param string $value
 	 *
 	 * @return LoginTable
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public static function findBy( string $key, string $value ) : LoginTable {
 
 		$model = LoginTableModel::where( $key, $value )->where('active', 1)->first();
 
 		if ( is_null( $model ) )
-			throw new \Exception("Token not found");
+			throw new Exception("Token not found");
 
 		$loginTable = new LoginTable();
 
-		$loginTable->id     = $model->id;
-		$loginTable->user   = User::find( $model->user_id );
-		$loginTable->token  = $model->token;
-		$loginTable->active = $model->active;
+		$loginTable->id           = $model->id;
+		$loginTable->user         = User::find( $model->user_id );
+		$loginTable->lastActivity = Carbon::parse( $model->last_activity );
+		$loginTable->duration     = $model->duration;
+		$loginTable->token        = $model->token;
+		$loginTable->active       = $model->active;
 
 		return $loginTable;
 
@@ -95,7 +102,7 @@ class LoginTable extends LoginTableModel implements JsonSerializable {
 	 *
 	 * @return mixed
 	 */
-	public static function create( LoginTable $loginTable, int $expireInMilliseconds = 0 ) {
+	public static function create( LoginTable $loginTable, int $expireInMilliseconds = -1 ) {
 
 		self::makeOtherLoginTableInactive( $loginTable );
 
@@ -130,16 +137,22 @@ class LoginTable extends LoginTableModel implements JsonSerializable {
 	}
 
 	/**
-	 * @param int $expireInMilliseconds
+	 * @param $expireInMilliseconds
 	 *
 	 * @return int
 	 */
-	public static function getExpiration( int $expireInMilliseconds = -1 ): int {
+	public static function getExpiration( $expireInMilliseconds = -1 ): int {
+
+		Log::info($expireInMilliseconds);
 
 		if ($expireInMilliseconds != -1)
 			return $expireInMilliseconds;
 
-		return env( 'SESSION_LIFETIME', 0 ) * 60 * 1000;
+		Log::info("SESSION_LIFETIME AS IN ENV FILE " . GlobalConsts::__USER_SESSION_LIFE_TIME);
+
+		$minutes = GlobalConsts::__USER_SESSION_LIFE_TIME;
+
+		return $minutes * 60 * 1000;
 
 	}
 
@@ -165,4 +178,52 @@ class LoginTable extends LoginTableModel implements JsonSerializable {
 		self::makeOtherLoginTableInactive( $this );
 
 	}
+
+	/**
+	 * Update the last activity date
+	 *
+	 * @throws SessionExpiredException
+	 */
+	public function nowStoreLastActivity() {
+
+		$model = LoginTableModel::find($this->id);
+
+		$now  = Carbon::now();
+
+		$diff = $now->diffInSeconds($this->lastActivity) * 1000;
+
+		Log::info( $diff . "|" . $this->duration );
+
+		if ($this->duration > 0 &&
+
+		    $diff > $this->duration) {
+
+			$this->makeInactive();
+
+			throw new SessionExpiredException("Session is expired. LastTime activity is greater than <" . $this->duration . "> milliseconds");
+
+		}
+
+		$model->last_activity = Carbon::now();
+
+		$model->save();
+
+	}
+
+}
+
+class SessionExpiredException extends Exception {
+
+	public function __construct( string $message = "", int $code = 0, Throwable $previous = null ) {
+		parent::__construct( $message, $code, $previous );
+	}
+
+	public function __toString() {
+		return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
+	}
+
+	public function customFunction() {
+		echo "A custom function for this type of exception\n";
+	}
+
 }

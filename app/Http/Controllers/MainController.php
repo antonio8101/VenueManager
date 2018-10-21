@@ -21,15 +21,11 @@ class MainController extends Controller
 
 			$headers = [];
 
-			$test = Cookie::get('ss_tok');
-
-			$cookie = cookie( 'ss_tok', $user->token());
+			$cookie = cookie( 'ss_tok', $user->token(), 120);
 
 			return response(view( self::APP_VIEW_NAME,
 				[
 					'appName'    => 'test',
-					'token'      => $user->token(),
-					'cookie'     => $test,
 					'refresh_id' => 'v=' . rand( 0, 99999 )
 				]
 			), 200, $headers)->cookie($cookie);
