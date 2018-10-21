@@ -2,17 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\URL;
 use Illuminate\View\View;
 
 class MainController extends Controller
 {
+	const APP_VIEW_NAME = "index";
 	const LOGIN_ROOT_VIEW_FOLDER = "login_views";
 
 	public function index() {
-		// REDIRECT IF NOT LOGGED IN
 
-		// TODO : Returns the Main JS Application (SPA)
+		if ( Auth::check() ) {
+
+			$user = User::find( Auth::id() );
+
+			$headers = [];
+
+			$test = Cookie::get('ss_tok');
+
+			$cookie = cookie( 'ss_tok', $user->token());
+
+			return response(view( self::APP_VIEW_NAME,
+				[
+					'appName'    => 'test',
+					'token'      => $user->token(),
+					'cookie'     => $test,
+					'refresh_id' => 'v=' . rand( 0, 99999 )
+				]
+			), 200, $headers)->cookie($cookie);
+
+		}
 
 		return redirect( '/login' );
 	}
@@ -26,10 +48,18 @@ class MainController extends Controller
 
 	}
 
-	/**
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-	 */
-	public function logout() : View {
+
+	public function logout() {
+
+		if (!Auth::check()) {
+
+			return redirect('/');
+
+		}
+
+		$user = User::find( Auth::id() );
+
+		$user->logout();
 
 		return $this->buildView( self::LOGIN_ROOT_VIEW_FOLDER, __FUNCTION__ );
 

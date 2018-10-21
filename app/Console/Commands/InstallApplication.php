@@ -6,7 +6,6 @@ use App\Facades\LoginTableFactory;
 use App\Facades\UserFactory;
 use App\GlobalConsts;
 use App\Models\LoginTable;
-use App\Models\LoginTableModel;
 use App\Models\Role;
 use App\Models\RoleModel;
 use App\Models\User;
@@ -76,7 +75,7 @@ class InstallApplication extends Command
 
 		$loginTable = LoginTableFactory::get( $user );
 
-		LoginTable::create( $loginTable );
+		LoginTable::create( $loginTable, 0 );
 
 		$this->info( "Application installed successfully" );
 

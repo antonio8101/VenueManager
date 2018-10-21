@@ -1,7 +1,7 @@
 "use strict";
 
-/** Env */
-const env = $('meta[name="env"]').attr('content');
+/** Route Settings */
+const loginRoute = "/api/login";
 
 /** Username/Password */
 let username = "";
@@ -9,20 +9,13 @@ let password = "";
 
 $(window).on("load", function() {
 
-    /** Password Forget */
-    $('.btn-forget').on('click',function(e){
-        e.preventDefault();
-        $('.form-items','.form-content').addClass('hide-it');
-        $('.form-sent','.form-content').addClass('show-it');
-    });
-
     /** Click on sign-in */
     $(document).on("click","#sign",function(e) {
         e.preventDefault();
         username = $("#username").val();
         password = $("#password").val();
         //
-        login(env);
+        login();
         //
         $('.form-items','.form-content').addClass('hide-it');
         $('.form-sent','.form-content').addClass('show-it');
@@ -39,6 +32,12 @@ $(window).on("load", function() {
  * @param callback
  */
 const jqxhr = function (url, postData, callback) {
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
     $.ajax({
         method: "POST",
@@ -58,20 +57,29 @@ const jqxhr = function (url, postData, callback) {
 
 /**
  * Login function
- *
- * @param env
  */
-function login(env){
+function login(){
 
-    jqxhr(env + "api/login", {
-            "username" : username,
+    jqxhr(loginRoute, {
+            "email" : username,
             "password" : password
-        },
-        function (data) {
-            console.log(data);
+    },
+    function (data) {
+
+        try {
+
             let redirectUrl = data.data.dashboard_url;
+
             window.location.replace(redirectUrl);
-            // showOnReservation_Confirmed(data);
-        });
+
+        } catch (e) {
+
+            console.log(data);
+
+            alert("Errore \n\n Something went wrong");
+
+        }
+
+    });
 
 }

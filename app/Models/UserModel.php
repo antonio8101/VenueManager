@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class UserModel extends Authenticatable
 {
-    use Notifiable;
+	use Notifiable;
 
     protected $table = "users";
 
@@ -17,7 +17,7 @@ class UserModel extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'id', 'firstName', 'lastName', 'email', 'birth_date', 'role_id', 'password', 'lastActivity',
+        'id', 'firstName', 'lastName', 'email', 'birth_date', 'role_id', 'password',
     ];
 
     /**
@@ -26,6 +26,6 @@ class UserModel extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
     ];
 }

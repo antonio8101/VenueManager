@@ -10,12 +10,6 @@
     <title>{{ strtoupper( $appName )  }}</title>
     <!-- /page title -->
 
-    <!-- css assets -->
-    <link rel="stylesheet" type="text/css" href="{{ url( 'css/bootstrap.min.css' ) }} ">
-    <link rel="stylesheet" type="text/css" href="{{ url( 'css/fontawesome-all.min.css' ) }}">
-    <link rel="stylesheet" type="text/css" href="{{ url( $assetsRootFolder . 'css/iofrm-style.css' ) }}?{{ $refresh_id }}">
-    <link rel="stylesheet" type="text/css" href="{{ url( $assetsRootFolder . 'css/iofrm-theme10.css' ) }}?{{ $refresh_id }}">
-    <!-- css assets -->
 </head>
 <body style="background-color: #57cba6cc;">
 
@@ -30,7 +24,7 @@
 <!-- /js assets -->
 
 <!-- main js code -->
-<script src="{{ url( $assetsRootFolder . 'js/main.js') }}?{{ $refresh_id }}"></script>
+{{--<script src="{{ url( $assetsRootFolder . 'js/main.js') }}?{{ $refresh_id }}"></script>--}}
 
 </body>
 </html>

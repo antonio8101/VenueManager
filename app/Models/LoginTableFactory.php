@@ -10,7 +10,15 @@ namespace App\Models;
 
 class LoginTableFactory {
 
-	public function get( User $user, $token = null, $active = null, $id = null ) {
+	/**
+	 * @param User $user
+	 * @param null $token
+	 * @param null $active
+	 * @param null $id
+	 *
+	 * @return LoginTable
+	 */
+	public function get( User $user, $token = null, $active = null, $id = null ) : LoginTable {
 
 		$loginTable = new LoginTable();
 
@@ -23,9 +31,16 @@ class LoginTableFactory {
 
 	}
 
+	/**
+	 * Generate a token for the given the User
+	 *
+	 * @param User $user
+	 *
+	 * @return string
+	 */
 	public function generateToken( User $user ) {
 
-		return "1234567889";
+		return LoginTable::tokenCreate( $user->id );
 
 	}
 

@@ -9,6 +9,6 @@ class LoginTableModel extends Model
 {
 	protected $table = 'login_table';
 
-	protected $fillable = [ 'user_id', 'token', 'active' ];
+	protected $fillable = [ 'user_id', 'token', 'active', 'last_activity', 'duration' ];
 
 }

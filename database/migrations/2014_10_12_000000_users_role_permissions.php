@@ -28,10 +28,7 @@ class UsersRolePermissions extends Migration
             $table->string('firstName');
 	        $table->string('lastName');
 	        $table->date('birth_date');
-	        $table->date('last_activity')->nullable();
-	        $table->boolean('password_to_reset')->nullable();
 	        $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->unsignedInteger('role_id')->nullable();
@@ -57,8 +54,10 @@ class UsersRolePermissions extends Migration
 	    Schema::create('login_table', function (Blueprint $table) {
 		    $table->increments('id');
 		    $table->boolean('active');
-		    $table->string('token');
+		    $table->string('token')->unique();
 		    $table->unsignedInteger('user_id');
+		    $table->date('last_activity')->nullable();
+		    $table->unsignedInteger('duration')->default(0);
 		    $table->timestamps();
 	    });
 

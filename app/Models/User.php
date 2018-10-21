@@ -11,7 +11,8 @@ namespace App\Models;
 
 use App\Facades\UserFactory;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use JsonSerializable;
 
 class User extends UserModel implements JsonSerializable {
@@ -34,13 +35,22 @@ class User extends UserModel implements JsonSerializable {
 
 	/** STRONGLY TYPED FIELD */
 
-	public $birthDate;
+	public $role;
 
-	public $lastActivity;
+	public $birthDate;
 
 	public $created;
 
 	public $updated;
+
+	/**
+	 * @param User $user
+	 *
+	 * @return string
+	 */
+	protected static function encryptPassword( User $user ): string {
+		return bcrypt( $user->password );
+	}
 
 	public function jsonSerialize() {
 		return [
@@ -51,7 +61,6 @@ class User extends UserModel implements JsonSerializable {
 				'email'        => $this->email,
 				'birthDate'    => $this->birthDate,
 				'role'         => $this->role,
-				'lastActivity' => $this->lastActivity,
 				'created'      => $this->created,
 				'updated'      => $this->updated,
 			]
@@ -89,7 +98,6 @@ class User extends UserModel implements JsonSerializable {
 		$this->birthDate = $birthDate;
 	}
 
-	public $role;
 
 	/**
 	 * @return Role
@@ -106,21 +114,8 @@ class User extends UserModel implements JsonSerializable {
 	}
 
 	/**
-	 * @return Carbon
-	 */
-	public function getLastActivity() : Carbon {
-		return $this->lastActivity;
-	}
-
-	/**
-	 * @param Carbon $lastActivity
-	 */
-	public function setLastActivity( Carbon $lastActivity ): void {
-		$this->lastActivity = $lastActivity;
-	}
-
-	/**
 	 * Creates a new User
+	 * Encrypts Password on user creation
 	 *
 	 * @param User $user
 	 *
@@ -136,7 +131,7 @@ class User extends UserModel implements JsonSerializable {
 			'email'      => $user->email,
 			'birth_date' => $user->birthDate,
 			'role_id'    => is_null($role) ? null : $role->id,
-			'password'   => Hash::make( $user->password )
+			'password'   => self::encryptPassword( $user)
 		] );
 
 		return $model->id;
@@ -164,6 +159,43 @@ class User extends UserModel implements JsonSerializable {
 		$user->updated = $model->updated_at;
 
 		return $user;
+
+	}
+
+	public function logout(){
+
+		try {
+
+			LoginTable::findBy( 'user_id', $this->id )->makeInactive();
+
+		} catch ( \Exception $e ) {
+
+			Log::error("There were errors in logout a user : " . $e->getMessage());
+
+		} finally {
+
+			Auth::logout();
+
+		}
+
+	}
+
+	/**
+	 * Gets the user active token
+	 *
+	 * @return mixed
+	 */
+	public function token(){
+
+		try {
+
+			return LoginTable::findBy( 'user_id', $this->id )->token;
+
+		} catch ( \Exception $e ) {
+
+			//
+
+		}
 
 	}
 

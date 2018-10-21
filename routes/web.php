@@ -14,3 +14,6 @@
 Route::get('/', 'MainController@index');
 Route::get('/login', 'MainController@login')->name('login');
 Route::get('/logout', 'MainController@logout')->name('logout');
+Route::any('/api/login', 'AuthController@login')->name('loginAttempt');
+Route::get('/api/venue/get/{id}', 'Api\VenueController@getOneVenueQuery');
+Route::get('/api/user/get/{id}', 'Api\UserController@getOneUserQuery')->middleware('auth:api');
