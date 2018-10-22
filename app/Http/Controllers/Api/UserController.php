@@ -9,9 +9,11 @@ use Illuminate\Http\Request;
 class UserController extends ApiBase
 {
 
-    public function __construct() {
+    public function __construct( Request $request ) {
 
     	$this->middleware('auth:api');
+
+    	$this->setUser($request);
 
     }
 
@@ -24,11 +26,17 @@ class UserController extends ApiBase
 	 */
     public function getUsersQuery(Request $request) {
 
-    	$params = $request->only('role', 'skip', 'take');
+    	return $this->exec(function () use ($request) {
 
-    	$users = User::getList( $params );
+    		$this->can(['CanManageUsers']);
 
-	    return $this->goodResponse( $users );
+		    $params = $request->only('role', 'skip', 'take');
+
+		    $users = User::getList( $params );
+
+		    return $this->goodResponse( $users );
+
+	    });
 
     }
 
@@ -41,9 +49,15 @@ class UserController extends ApiBase
 	 */
     public function getOneUserQuery(string $id){
 
-    	$user = User::find($id);
+	    return $this->exec(function () use ($id) {
 
-    	return $this->goodResponse( $user );
+		    $this->can(['CanManageUsers']);
+
+		    $user = User::find($id);
+
+		    return $this->goodResponse( $user );
+
+	    });
 
     }
 
