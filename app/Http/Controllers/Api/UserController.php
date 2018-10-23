@@ -79,20 +79,7 @@ class UserController extends ApiBase
 
 	    if (isset($validated['profileImage'])) {
 
-	    	try {
-
-			    $path = $request->profileImage->store('images');
-
-			    $user->setProfileImage( $path );
-
-		    }
-		    catch (\Exception $e){
-
-	    		Log::error("User Profile Image not stored");
-			    Log::error($e->getMessage());
-			    Log::error($e->getTrace());
-
-		    }
+		    $this->setProfileImageOnUser( $request, $user );
 
 	    }
 
@@ -106,5 +93,27 @@ class UserController extends ApiBase
     public function linkUserToVenueCommand(UserModel $user, Venue $venue){
     	//
     }
+
+	/**
+	 * Stores the image file on system and path to the image on the user data
+	 *
+	 * @param CreateUserCommand $request
+	 * @param $user
+	 */
+	protected function setProfileImageOnUser( CreateUserCommand $request, $user ): void {
+		try {
+
+			$path = $request->profileImage->store( 'images' );
+
+			$user->setProfileImage( $path );
+
+		} catch ( \Exception $e ) {
+
+			Log::error( "User Profile Image not stored" );
+			Log::error( $e->getMessage() );
+			Log::error( $e->getTrace() );
+
+		}
+	}
 
 }
