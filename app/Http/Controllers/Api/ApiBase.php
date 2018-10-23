@@ -20,26 +20,6 @@ class ApiBase extends Controller {
 
 	protected $user;
 
-	protected function exec($fn){
-
-		try {
-
-			return $fn();
-
-		}
-		catch ( UnauthorizedException $e ){
-
-			return $this->badResponse( '403', "Forbidden");
-
-		}
-		catch ( Exception $e ) {
-
-			return $this->badResponse(400, $e->getMessage());
-
-		}
-
-	}
-
 	/**
 	 * User ability checks
 	 *

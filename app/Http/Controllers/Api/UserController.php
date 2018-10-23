@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\GetOneUserQuery;
+use App\Http\Requests\UsersQuery;
 use App\Models\User;
 use App\UserModel;
 use Illuminate\Http\Request;
 
 class UserController extends ApiBase
 {
+	public function __construct( Request $request ) {
 
-    public function __construct( Request $request ) {
-
-    	$this->middleware('auth:api');
+		$this->middleware('auth:api');
 
     	$this->setUser($request);
 
@@ -20,45 +21,31 @@ class UserController extends ApiBase
 	/**
 	 * Returns the users list
 	 *
-	 * @param Request $request
+	 * @param UsersQuery $request
 	 *
 	 * @return response
 	 */
-    public function getUsersQuery(Request $request) {
+    public function getUsersQuery(UsersQuery $request) {
 
-    	return $this->exec(function () use ($request) {
+	    $params = $request->only('role', 'skip', 'take');
 
-    		$this->can(['CanManageUsers']);
+	    $users = User::getList( $params );
 
-		    $params = $request->only('role', 'skip', 'take');
-
-		    $users = User::getList( $params );
-
-		    return $this->goodResponse( $users );
-
-	    });
-
+	    return $this->goodResponse( $users );
     }
 
 	/**
 	 * Returns a User matching with $id
 	 *
-	 * @param string $id
+	 * @param GetOneUserQuery $request
 	 *
 	 * @return response
 	 */
-    public function getOneUserQuery(string $id){
+    public function getOneUserQuery(GetOneUserQuery $request){
 
-	    return $this->exec(function () use ($id) {
+	    $user = User::find( $request->id  );
 
-		    $this->can(['CanManageUsers']);
-
-		    $user = User::find($id);
-
-		    return $this->goodResponse( $user );
-
-	    });
-
+	    return $this->goodResponse( $user );
     }
 
     public function createUserCommand($userData = []){

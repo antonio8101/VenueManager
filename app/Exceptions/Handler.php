@@ -7,13 +7,16 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
+
+	use ApiErrorRendering;
+
     /**
      * A list of the exception types that are not reported.
      *
      * @var array
      */
     protected $dontReport = [
-        //
+	    //
     ];
 
     /**
@@ -26,26 +29,34 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
-    /**
-     * Report or log an exception.
-     *
-     * @param  \Exception  $exception
-     * @return void
-     */
+	/**
+	 * Report or log an exception.
+	 *
+	 * @param  Exception $exception
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
     public function report(Exception $exception)
     {
         parent::report($exception);
     }
 
-    /**
-     * Render an exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * Render an exception into an HTTP response.
+	 *
+	 * @param  \Illuminate\Http\Request $request
+	 * @param  \Exception $exception
+	 *
+	 * @return Handler
+	 */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+    	return $this->customErrorRendering( $request, $exception,  function() use ($request, $exception){
+
+        	return parent::render($request, $exception);
+
+        } );
     }
+
 }

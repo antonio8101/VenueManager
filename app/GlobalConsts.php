@@ -11,6 +11,7 @@ namespace App;
 
 class GlobalConsts {
 
+	const __APP_DEBUG = true;
 	const __ADMIN_ROLE__ = 'Admin';
 	const __SUPERVISOR_ROLE__ = 'SuperVisor';
 	const __USER_ROLE__ = 'User';
