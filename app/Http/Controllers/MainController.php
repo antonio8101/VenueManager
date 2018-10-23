@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LoginTable;
+use App\Models\SessionExpiredException;
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\URL;
 use Illuminate\View\View;
 
@@ -13,15 +15,24 @@ class MainController extends Controller
 	const APP_VIEW_NAME = "index";
 	const LOGIN_ROOT_VIEW_FOLDER = "login_views";
 
+	/**
+	 * Route main view
+	 * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 */
 	public function index() {
 
 		if ( Auth::check() ) {
 
 			$user = User::find( Auth::id() );
 
+			$userToken = $this->getUserToken( $user );
+
+			if (is_null( $userToken ))
+				return redirect('/login');
+
 			$headers = [];
 
-			$cookie = cookie( 'ss_tok', $user->token(), 120);
+			$cookie = cookie( 'ss_tok', $userToken, 120);
 
 			return response(view( self::APP_VIEW_NAME,
 				[
@@ -36,6 +47,7 @@ class MainController extends Controller
 	}
 
 	/**
+	 * Route login
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
 	public function login() : View{
@@ -45,6 +57,10 @@ class MainController extends Controller
 	}
 
 
+	/**
+	 * Route logout
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|View
+	 */
 	public function logout() {
 
 		if (!Auth::check()) {
@@ -84,5 +100,39 @@ class MainController extends Controller
 				'refresh_id'       => 'v=' . rand( 0, 99999 )
 			]
 		);
+	}
+
+	/**
+	 * Get the last active User token
+	 * Can't returns token if there are no active tokens
+	 * or if the last token active is expired
+	 *
+	 * @param User $user
+	 *
+	 * @return mixed|null
+	 */
+	protected function getUserToken( User $user ) {
+
+		try {
+
+			$token = $user->token();
+
+			if (is_null($token)) {
+
+				throw new SessionExpiredException("No Active tokens for the given User");
+
+			}
+
+			$loginTable = LoginTable::findBy( 'token', $token );
+			$loginTable->nowStoreLastActivity();
+
+			return $token;
+
+		} catch ( Exception $e ){
+
+			return null;
+
+		}
+
 	}
 }
