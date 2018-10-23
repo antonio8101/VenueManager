@@ -30,7 +30,7 @@ class UserFactory {
 
 		$user->firstName = $firstName;
 		$user->lastName  = $lastName;
-		$user->setEmail( $email );
+		$user->email = $email;
 		$user->setBirthDate( $birthDate );
 		$user->setRole( $role );
 

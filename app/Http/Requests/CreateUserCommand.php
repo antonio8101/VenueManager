@@ -37,12 +37,12 @@ class CreateUserCommand extends ApiFormRequest {
 		$passwordMinLength = GlobalConsts::__PASSWORD_MIN_LENGTH__;
 
 		return [
-			'firstname' => 'required',
-			'surname' => 'required',
-			'email' => 'required|unique:users,email|regex:/^.+@.+$/i',
-			'password' => 'required|alpha_dash|size:' . $passwordMinLength,
-			'role' => 'required|exists:roles,name',
-			'birthDate' => 'required|date',
+			'firstName'    => 'required',
+			'lastName'     => 'required',
+			'email'        => 'required|unique:users,email|regex:/^.+@.+$/i',
+			'password'     => 'required|alpha_dash|size:' . $passwordMinLength,
+			'role'         => 'required|exists:roles,name',
+			'birthDate'    => 'required|date',
 			'profileImage' => 'image',
 		];
 
@@ -58,3 +58,4 @@ class CreateUserCommand extends ApiFormRequest {
 	}
 
 }
+

@@ -46,12 +46,14 @@ class User extends UserModel implements JsonSerializable {
 	public $updated;
 
 	/**
-	 * @param User $user
+	 * @param string $password
 	 *
 	 * @return string
 	 */
-	protected static function encryptPassword( User $user ): string {
-		return bcrypt( $user->password );
+	protected static function encryptPassword( string $password ): string {
+
+		return bcrypt( $password );
+
 	}
 
 	/**
@@ -93,23 +95,6 @@ class User extends UserModel implements JsonSerializable {
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getEmail() : string {
-		return $this->email;
-	}
-
-	/**
-	 * @param string $email
-	 */
-	public function setEmail( string $email ): void {
-
-		// TODO : Validate EMAIL
-
-		$this->email = $email;
-	}
-
-	/**
 	 * @return Carbon
 	 */
 	public function getBirthDate() : Carbon {
@@ -148,18 +133,26 @@ class User extends UserModel implements JsonSerializable {
 	 */
 	public static function create( User $user ){
 
+		$userAttributes = self::getUserAttributes( $user );
+
+		$model = UserModel::create( $userAttributes );
+
+		return $model->id;
+	}
+
+	public static function getUserAttributes( User $user ){
+
 		$role = $user->role;
 
-		$model = UserModel::create( [
+		return [
 			'firstName'  => $user->firstName,
 			'lastName'   => $user->lastName,
 			'email'      => $user->email,
 			'birth_date' => $user->birthDate,
 			'role_id'    => is_null($role) ? null : $role->id,
-			'password'   => self::encryptPassword( $user)
-		] );
+			'password'   => self::encryptPassword( $user->password )
+		];
 
-		return $model->id;
 	}
 
 	/**
@@ -218,10 +211,29 @@ class User extends UserModel implements JsonSerializable {
 
 
 	/**
+	 * Create or Update a User in DB
 	 *
-	 * @return bool|void
+	 * @return void
 	 */
-	public function store() {
+	public function store(): void {
+
+		if ( !is_null( $this->id ) ) {
+
+			$attributes = self::getUserAttributes( $this );
+
+			$model = UserModel::find($this->id);
+
+			$model->fill( $attributes );
+
+			if ( !UserModel::where('email', $model->email)->where('id', '!=', $model->id)->count() > 0 ) {
+
+				$model->save();
+
+			}
+
+			return;
+
+		}
 
 		$id = User::create( $this );
 
@@ -285,6 +297,36 @@ class User extends UserModel implements JsonSerializable {
 
 	}
 
+
+	public function updateUserProperty( $field, $value ) {
+
+		if ( $field == "role" ) {
+
+			$role = Role::findBy( 'name', $value );
+
+			$this->setRole( $role );
+
+		} else if ( $field == "birthDate" ) {
+
+			$birthDate = Carbon::parse( $value );
+
+			$this->birthDate = $birthDate;
+
+		} else if ( $field == "firstName" ) {
+
+			$this->firstName = $value;
+
+		} else if ( $field == "lastName" ) {
+
+			$this->lastName = $value;
+
+		} else {
+
+			$this->$field = $value;
+
+		}
+
+	}
 
 
 }

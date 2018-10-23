@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Facades\UserFactory;
 use App\Http\Requests\CreateUserCommand;
+use App\Http\Requests\EditUserCommand;
 use App\Http\Requests\GetOneUserQuery;
 use App\Http\Requests\UsersQuery;
 use App\Models\Role;
@@ -62,22 +63,22 @@ class UserController extends ApiBase
 	 */
     public function createUserCommand(CreateUserCommand $request){
 
-	    $validated = $request->validated();
+	    $properties = $request->validated();
 
-	    $role = Role::findBy('name', $validated['role']);
+	    $role = Role::findBy('name', $properties['role']);
 
 	    $user = UserFactory::get(
-	    	$validated['firstname'],
-		    $validated['surname'],
-		    $validated['password'],
-		    $validated['email'],
-		    Carbon::parse($validated['birthDate']),
+	    	$properties['firstName'],
+		    $properties['lastName'],
+		    $properties['password'],
+		    $properties['email'],
+		    Carbon::parse($properties['birthDate']),
 		    $role
 	    );
 
 	    $user->store();
 
-	    if (isset($validated['profileImage'])) {
+	    if (isset($properties['profileImage'])) {
 
 		    $this->setProfileImageOnUser( $request, $user );
 
@@ -86,9 +87,47 @@ class UserController extends ApiBase
 	    return $this->goodResponse( $user );
     }
 
-    public function editUserCommand($userData = [], string $userId){
-    	//
+
+	/**
+	 * Edits the User matching with id property
+	 *
+	 * @param EditUserCommand $request
+	 *
+	 * @return response
+	 */
+    public function editUserCommand(EditUserCommand $request){
+
+	    $properties = $request->validated();
+
+	    $user = User::find( $properties['id'] );
+
+	    foreach ( $properties as $index => $property ) {
+
+	    	if ($index != 'id') {
+
+			    $user->updateUserProperty( $index, $property );
+
+		    }
+
+	    }
+
+	    $user->store();
+
+	    if (isset($properties['profileImage'])) {
+
+		    $this->setProfileImageOnUser( $request, $user );
+
+	    }
+
+	    return $this->goodResponse( [
+
+		    "message" => "user updated",
+		    "user"    => $user
+
+	    ] );
     }
+
+
 
     public function linkUserToVenueCommand(UserModel $user, Venue $venue){
     	//
