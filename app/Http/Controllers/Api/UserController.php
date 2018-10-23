@@ -75,7 +75,7 @@ class UserController extends ApiBase
 		    $role
 	    );
 
-	    $user->save();
+	    $user->store();
 
 	    if (isset($validated['profileImage'])) {
 
@@ -89,6 +89,8 @@ class UserController extends ApiBase
 		    catch (\Exception $e){
 
 	    		Log::error("User Profile Image not stored");
+			    Log::error($e->getMessage());
+			    Log::error($e->getTrace());
 
 		    }
 

@@ -218,11 +218,10 @@ class User extends UserModel implements JsonSerializable {
 
 
 	/**
-	 * @param array $options
 	 *
 	 * @return bool|void
 	 */
-	public function save( array $options = [] ) {
+	public function store() {
 
 		$id = User::create( $this );
 
