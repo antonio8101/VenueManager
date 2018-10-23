@@ -136,10 +136,10 @@ class UserController extends ApiBase
 	/**
 	 * Stores the image file on system and path to the image on the user data
 	 *
-	 * @param CreateUserCommand $request
+	 * @param Request $request
 	 * @param $user
 	 */
-	protected function setProfileImageOnUser( CreateUserCommand $request, $user ): void {
+	protected function setProfileImageOnUser( Request $request, $user ): void {
 		try {
 
 			$path = $request->profileImage->store( 'images' );
