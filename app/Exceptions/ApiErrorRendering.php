@@ -11,9 +11,10 @@ namespace App\Exceptions;
 use App\GlobalConsts;
 use App\Exceptions\Api\AuthorizationException;
 use Illuminate\{
-	Auth\AuthenticationException, Http\Request, Support\Facades\Log
+	Auth\AuthenticationException, Http\Request, Support\Facades\Log, Validation\ValidationException
 };
 use Exception;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 trait ApiErrorRendering {
 
@@ -35,12 +36,29 @@ trait ApiErrorRendering {
 			if ( $exception instanceof AuthorizationException ) {
 
 				return $this->rendering($exception, 403);
-
 			}
 
 			if ( $exception instanceof AuthenticationException) {
 
 				return $this->rendering($exception, 401);
+			}
+
+			if ( $exception instanceof ValidationException) {
+
+				$msg  = $exception->getMessage();
+
+				$e = new Exception($msg);
+
+				$e->validationErrors = $exception->errors();
+
+				return $this->rendering($e, 400);
+			}
+
+			if ( $exception instanceof NotFoundHttpException) {
+
+				$e = new Exception("Page not found");
+
+				return $this->rendering($e, 404);
 			}
 
 			return $this->rendering( $exception );
@@ -62,6 +80,12 @@ trait ApiErrorRendering {
 	protected function rendering( Exception $exception, int $statusCode = 500){
 
 		$badResponse =  [ "isValid" => false, "message" => $exception->getMessage() ];
+
+		if (isset($exception->validationErrors)) {
+
+			$badResponse["validationErrors"] = $exception->validationErrors;
+
+		}
 
 		if ($statusCode == 500 && GlobalConsts::__APP_DEBUG) {
 

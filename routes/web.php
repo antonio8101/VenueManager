@@ -16,5 +16,6 @@ Route::get( '/login', 'MainController@login' )->name( 'login' );
 Route::get( '/logout', 'MainController@logout' )->name( 'logout' );
 Route::any( '/api/login', 'AuthController@login' )->name( 'loginAttempt' );
 Route::get( '/api/venue/get/{id}', 'Api\VenueController@getOneVenueQuery' );
-Route::get( '/api/user/get/{id}', 'Api\UserController@getOneUserQuery' )->name('getOneUserQuery');
-Route::any( '/api/user/list', 'Api\UserController@getUsersQuery' )->name('getUsersQuery');
+Route::get( '/api/user/get/{id}', 'Api\UserController@getOneUserQuery' )->name('GetOneUserQuery');
+Route::any( '/api/user/list', 'Api\UserController@getUsersQuery' )->name('UsersQuery');
+Route::any( '/api/user/create', 'Api\UserController@createUserCommand' )->name('CreateUserCommand');

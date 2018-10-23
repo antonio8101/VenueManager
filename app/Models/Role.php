@@ -23,6 +23,29 @@ class Role extends RoleModel implements JsonSerializable {
 
 	public $permissions;
 
+	/**
+	 * @param $model
+	 *
+	 * @return mixed
+	 */
+	protected static function modelToDomainObect( $model ) {
+		$permissions = new Collection();
+
+		$rolePermissions = RolesPermissions::where( 'role_id', $model->id )->get();
+
+		foreach ( $rolePermissions as $rolePermission ) {
+
+			$permission = Permission::find( $rolePermission->permission_id );
+
+			$permissions->push( $permission );
+
+		}
+
+		$role = RoleFactory::get( $model->name, $permissions, $model->id );
+
+		return $role;
+	}
+
 	public function jsonSerialize() {
 		return [
 			'Role' => [
@@ -59,21 +82,21 @@ class Role extends RoleModel implements JsonSerializable {
 
 		$model = RoleModel::find( $id );
 
-		$permissions = new Collection();
+		return self::modelToDomainObect( $model );
 
-		$rolePermissions = RolesPermissions::where( 'role_id', $model->id )->get();
+	}
 
-		foreach ( $rolePermissions as $rolePermission ) {
+	/**
+	 * @param string $key
+	 * @param string $value
+	 *
+	 * @return mixed
+	 */
+	public static function findBy( string $key, string $value): Role {
 
-			$permission = Permission::find( $rolePermission->permission_id );
+		$model = RoleModel::where($key, $value)->first();
 
-			$permissions->push( $permission );
-
-		}
-
-		$role = RoleFactory::get( $model->name, $permissions, $model->id );
-
-		return $role;
+		return self::modelToDomainObect( $model );
 
 	}
 

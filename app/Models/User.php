@@ -29,6 +29,8 @@ class User extends UserModel implements JsonSerializable {
 
 	public $rememberTokenName;
 
+	public $profileImage;
+
 	/** TO BE VALIDATED FIELDS **/
 
 	public $email;
@@ -66,9 +68,10 @@ class User extends UserModel implements JsonSerializable {
 			$model->firstName, $model->lastName, $model->password,
 			$model->email, Carbon::parse( $model->birth_date ), $role );
 
-		$user->id      = $id;
-		$user->created = $model->created_at;
-		$user->updated = $model->updated_at;
+		$user->id           = $id;
+		$user->profileImage = $model->profile_image;
+		$user->created      = $model->created_at;
+		$user->updated      = $model->updated_at;
 
 		return $user;
 	}
@@ -82,6 +85,7 @@ class User extends UserModel implements JsonSerializable {
 				'email'        => $this->email,
 				'birthDate'    => $this->birthDate,
 				'role'         => $this->role,
+				'profileImage' => $this->profileImage,
 				'created'      => $this->created,
 				'updated'      => $this->updated,
 			]
@@ -212,6 +216,37 @@ class User extends UserModel implements JsonSerializable {
 
 	}
 
+
+	/**
+	 * @param array $options
+	 *
+	 * @return bool|void
+	 */
+	public function save( array $options = [] ) {
+
+		$id = User::create( $this );
+
+		$this->id = $id;
+		$this->created = Carbon::now();
+		$this->updated = Carbon::now();
+
+	}
+
+
+	/**
+	 * Sets an image path on the user record and update the object property
+	 *
+	 * @param string $path
+	 */
+	public function setProfileImage( string $path ) {
+
+		$model = UserModel::find( $this->id );
+		$model->profile_image = $path;
+		$model->save();
+
+		$this->profileImage = $path;
+
+	}
 
 	/**
 	 * Gets a User list

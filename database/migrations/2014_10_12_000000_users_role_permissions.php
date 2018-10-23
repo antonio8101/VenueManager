@@ -30,6 +30,7 @@ class UsersRolePermissions extends Migration
 	        $table->date('birth_date');
 	        $table->string('email')->unique();
             $table->string('password');
+            $table->string('profile_image')->nullable();
             $table->rememberToken();
             $table->unsignedInteger('role_id')->nullable();
             $table->timestamps();
