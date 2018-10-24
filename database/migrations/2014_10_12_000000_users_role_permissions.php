@@ -66,6 +66,30 @@ class UsersRolePermissions extends Migration
 		    $table->foreign('user_id')->references('id')->on('users');
 	    });
 
+	    Schema::create('addresses', function (Blueprint $table) {
+		    $table->increments('id');
+		    $table->string('name')->nullable();
+		    $table->string('city');
+		    $table->string('street');
+		    $table->string('country_id'); // iso 3
+		    $table->string('country_name'); // iso 3
+		    $table->decimal('latitude');
+		    $table->decimal('longitue');
+		    $table->timestamps();
+	    });
+
+	    Schema::create('venues', function (Blueprint $table) {
+		    $table->increments('id');
+		    $table->string('name')->nullable();
+		    $table->unsignedInteger('address_id');
+		    $table->timestamps();
+	    });
+
+	    Schema::table('venues', function($table) {
+		    $table->foreign('address_id')->references('id')->on('addresses');
+	    });
+
+	    // VenueToUser Relationship
     }
 
     /**
@@ -80,5 +104,7 @@ class UsersRolePermissions extends Migration
 	    Schema::dropIfExists('roles_permissions');
 	    Schema::dropIfExists('roles');
 	    Schema::dropIfExists('permissions');
+	    Schema::dropIfExists('venues');
+	    Schema::dropIfExists('addresses');
     }
 }
