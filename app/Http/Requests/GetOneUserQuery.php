@@ -27,7 +27,8 @@ class GetOneUserQuery extends ApiFormRequest
     public function rules()
     {
         return [
-            //
+	        'id' => 'exists:users,id'
         ];
     }
 }
+
