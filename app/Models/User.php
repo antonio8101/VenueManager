@@ -47,7 +47,6 @@ class User extends UserModel implements JsonSerializable {
 
 	/**
 	 * @param string $password
-	 *
 	 * @return string
 	 */
 	protected static function encryptPassword( string $password ): string {
@@ -58,11 +57,11 @@ class User extends UserModel implements JsonSerializable {
 
 	/**
 	 * @param string $id
-	 * @param $model
+	 * @param UserModel $model
 	 *
 	 * @return mixed
 	 */
-	protected static function getFromModel( string $id, $model ) {
+	protected static function getFromModel( string $id, UserModel $model ) {
 
 		$role = Role::find( $model->role_id );
 

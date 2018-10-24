@@ -51,4 +51,43 @@ class Address extends AddressModel {
 		return $model->id;
 	}
 
+
+	/**
+	 * Returns the Address matching with the given $ids
+	 *
+	 * @param string $id
+	 *
+	 * @return Address
+	 */
+	public static function find( string $id ): Address{
+
+		$model = AddressModel::find( $id );
+
+		return self::getFromModel( $id, $model );
+
+	}
+
+	/**
+	 * Returns the Address Domain Object from Model
+	 *
+	 * @param string $id
+	 * @param AddressModel $model
+	 *
+	 * @return mixed
+	 */
+	protected static function getFromModel( string $id, AddressModel $model ) {
+
+		$address = new Address();
+
+		$address->id        = $id;
+		$address->name      = $model->name;
+		$address->city      = $model->city;
+		$address->street    = $model->street;
+		$address->countryId = $model->country_id;
+		$address->zipCode   = $model->zip_code;
+		$address->longitude = $model->longitude;
+		$address->latitude  = $model->latitude;
+
+		return $address;
+	}
 }

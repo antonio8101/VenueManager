@@ -104,5 +104,65 @@ class Venue extends VenueModel {
 		return $model->id;
 	}
 
+	/**
+	 * Returns a list of Venues domain objects
+	 *
+	 * @param array $params
+	 */
+	public static function getList( $params = array() ) {
+
+		$skip = $params['skip'] ?? 0;
+		$take = $params['take'] ?? 0;
+		$userId = $params['user_id'] ?? null;
+		$addressLatitude = $params['latitude'] ?? null;
+		$addressLongitude = $params['latitude'] ?? null;
+		$addressCity = $params['city'];
+
+		if (!is_null( $addressLongitude ) && !is_null( $addressLatitude )) {
+
+			// Search for coordinates
+
+		}
+
+		if (!is_null( $addressCity )) {
+
+			// Search for city
+
+		}
+
+		if (!is_null( $userId )) {
+
+			// UserId
+
+		}
+
+		VenueModel::where('id', '>', 0)
+		->skip( $skip )
+		->take( $take )
+		->map( function ( $item ) {
+			return self::getFromModel( $item->id, $item );
+		});
+
+	}
+
+	/**
+	 * Gets the domain object from a Venue Model
+	 *
+	 * @param string $id
+	 * @param $model
+	 *
+	 * @return mixed
+	 */
+	protected static function getFromModel( string $id, $model ) {
+
+		$address = Address::find( $model->address_id );
+
+		$venue = VenueFactory::get( [
+			'name' => $model->name,
+			'address' => $address
+		], $id );
+
+		return $venue;
+	}
 }
 
