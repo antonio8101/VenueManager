@@ -26,4 +26,7 @@ Route::any( '/api/user/create', 'Api\UserController@createUserCommand' )->name('
 Route::any( '/api/user/edit', 'Api\UserController@editUserCommand' )->name('EditUserCommand');
 
 /** API VENUE */
-Route::get( '/api/venue/get/{id}', 'Api\VenueController@getOneVenueQuery' );
+Route::get( '/api/venue/get/{id}', 'Api\VenueController@getOneVenueQuery' )->name('GetOneVenueQuery');
+Route::any( '/api/venue/list', 'Api\VenueController@getVenuesQuery' )->name('VenuesQuery');
+Route::any( '/api/venue/create', 'Api\VenueController@createVenueCommand' )->name('CreateVenueCommand');
+Route::any( '/api/venue/edit', 'Api\VenueController@editVenueCommand' )->name('EditVenueCommand');

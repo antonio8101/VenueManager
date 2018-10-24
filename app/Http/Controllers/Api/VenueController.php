@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\GetOneVenueQuery;
+use App\Http\Requests\VenuesQuery;
 use App\Models\Address;
 use App\Models\Venue;
 use App\Models\VenueFactory;
@@ -10,21 +12,43 @@ class VenueController extends ApiBase
 {
 	private $factory;
 
-    public function __construct(VenueFactory $factory) {
+	public function __construct( Request $request, VenueFactory $factory ) {
 
-	    //$this->middleware('auth-api');
+		$this->middleware( 'auth:api' );
 
-	    $this->factory = $factory;
+		$this->setUser( $request );
+
+		$this->factory = $factory;
+
+	}
+
+	/**
+	 * Returns the venues list
+	 *
+	 * @param VenuesQuery $request
+	 *
+	 * @return response
+	 */
+    public function getVenuesQuery( VenuesQuery $request ){
+
+    	$params = $request->validated();
+
+    	$venues = Venue::getList( $params ); // TODO : Creates this method
+
+    	return $this->goodResponse( $venues );
 
     }
 
-    public function getVenuesQuery(){
-    	//
-    }
+	/**
+	 * Returns a Venue matching with $id
+	 *
+	 * @param GetOneVenueQuery $request
+	 *
+	 * @return response
+	 */
+    public function getOneVenueQuery(GetOneVenueQuery $request){
 
-    public function getOneVenueQuery(string $id){
-
-    	$venue = Venue::find($id);
+    	$venue = Venue::find( $request->id );
 
     	return $this->goodResponse($venue);
 
@@ -35,7 +59,7 @@ class VenueController extends ApiBase
 	 *
 	 * @param array $venueData
 	 *
-	 * @return $this
+	 * @return response
 	 */
 	public function createVenueCommand( $venueData = [] ) {
 
