@@ -24,17 +24,18 @@ class UserFactory {
 	 *
 	 * @return User
 	 */
-	public function get( $firstName, $lastName, $password, $email, Carbon $birthDate, Role $role,  $id = null ): User {
+	public function get( $firstName, $lastName, $password, $email, Carbon $birthDate, Role $role, $active = true, $id = null ): User {
 
 		$user = new User();
 
 		$user->firstName = $firstName;
 		$user->lastName  = $lastName;
-		$user->email = $email;
+		$user->active    = $active;
+		$user->email     = $email;
 		$user->setBirthDate( $birthDate );
 		$user->setRole( $role );
 
-		$user->password  = $password;
+		$user->password = $password;
 
 		$user->id = $id;
 

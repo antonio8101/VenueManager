@@ -24,6 +24,8 @@ class User extends UserModel implements JsonSerializable {
 
 	public $id;
 
+	public $active;
+
 	public $firstName;
 
 	public $lastName;
@@ -73,6 +75,7 @@ class User extends UserModel implements JsonSerializable {
 			$model->email, Carbon::parse( $model->birth_date ), $role );
 
 		$user->id              = $id;
+		$user->active          = $model->active;
 		$user->profileImage    = $model->profile_image;
 		$user->created_at      = $model->created_at;
 		$user->updated_at      = $model->updated_at;
@@ -137,6 +140,7 @@ class User extends UserModel implements JsonSerializable {
 
 		return [
 			'firstName'  => $user->firstName,
+			'active'     => $user->active,
 			'lastName'   => $user->lastName,
 			'email'      => $user->email,
 			'birth_date' => $user->birthDate,
@@ -265,6 +269,7 @@ class User extends UserModel implements JsonSerializable {
 		$roles = [];
 
 		$query = UserModel::where( 'id', '>', 0 )
+		                  ->where('active', 1)
 		                  ->where( function ( $query ) use ( $params, $roles ) {
 
 			                  if (isset($params['role'])) {

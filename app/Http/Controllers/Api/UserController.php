@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Facades\UserFactory;
 use App\Http\Requests\CreateUserCommand;
+use App\Http\Requests\DeleteOneUserCommand;
 use App\Http\Requests\EditUserCommand;
 use App\Http\Requests\GetOneUserQuery;
 use App\Http\Requests\UsersQuery;
@@ -36,6 +37,22 @@ class UserController extends ApiBase
 		$user = User::find( $request->id  );
 
 		return $this->goodResponse( $user );
+	}
+
+	/**
+	 * Deletes a User mathching with $id
+	 *
+	 * @param DeleteOneUserCommand $request
+	 *
+	 * @return response
+	 */
+	public function deleteUserCommand( DeleteOneUserCommand $request ){
+
+		$user = User::find( $request->id );
+
+		$user->softDelete();
+
+		return $this->goodResponse("User <$request->id> deleted");
 	}
 
 	/**
@@ -127,11 +144,6 @@ class UserController extends ApiBase
 	    ] );
     }
 
-
-
-    public function linkUserToVenueCommand(UserModel $user, Venue $venue){
-    	//
-    }
 
 	/**
 	 * Stores the image file on system and path to the image on the user data

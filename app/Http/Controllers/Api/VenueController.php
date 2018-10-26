@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\CreateVenueCommand;
+use App\Http\Requests\DeleteOneVenueCommand;
 use App\Http\Requests\EditVenueCommand;
 use App\Http\Requests\GetOneVenueQuery;
 use App\Http\Requests\VenuesQuery;
@@ -106,6 +107,24 @@ class VenueController extends ApiBase
 
     	return $this->goodResponse($venue);
 
+    }
+
+	/**
+	 * Deletes a Venue matching with $id
+	 *
+	 * @param DeleteOneVenueCommand $request
+	 *
+	 * @return response
+	 *
+	 * @throws Exception
+	 */
+    public function deleteVenueCommand( DeleteOneVenueCommand $request ){
+
+	    $venue = Venue::find( $request->id );
+
+	    $venue->softDelete();
+
+	    return $this->goodResponse("Venue <$request->id> deleted");
     }
 
 	/**

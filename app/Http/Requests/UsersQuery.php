@@ -27,7 +27,7 @@ class UsersQuery extends ApiFormRequest
     public function rules()
     {
         return [
-	        'role'              => 'exists:roles,id',
+	        'role'              => 'exists:roles,name',
 	        'skip'              => 'Numeric',
 	        'take'              => 'Numeric'
         ];

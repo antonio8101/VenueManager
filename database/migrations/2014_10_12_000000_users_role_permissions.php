@@ -25,6 +25,7 @@ class UsersRolePermissions extends Migration
 
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
+            $table->boolean('active')->default(true);
             $table->string('firstName');
 	        $table->string('lastName');
 	        $table->date('birth_date');
@@ -81,6 +82,7 @@ class UsersRolePermissions extends Migration
 
 	    Schema::create('venues', function (Blueprint $table) {
 		    $table->increments('id');
+		    $table->boolean('active')->default(true);
 		    $table->string('name')->nullable();
 		    $table->unsignedInteger('address_id');
 		    $table->timestamps();

@@ -2,17 +2,17 @@
 /**
  * Created by PhpStorm.
  * User: Antonio
- * Date: 24/10/2018
- * Time: 15:35
+ * Date: 27/10/2018
+ * Time: 00:33
  */
 
 namespace App\Http\Requests;
 
-class GetOneVenueQuery extends ApiFormRequest {
+class DeleteOneVenueCommand extends ApiFormRequest {
 
 	use CustomAuthorizationTrait;
 
-	protected $abilities = [ 'CanManageVenues' ];
+	protected $abilities = [ 'CanDeleteVenues' ];
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -37,4 +37,3 @@ class GetOneVenueQuery extends ApiFormRequest {
 	}
 
 }
-

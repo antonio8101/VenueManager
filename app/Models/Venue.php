@@ -23,6 +23,8 @@ class Venue extends VenueModel implements JsonSerializable {
 
 	public $id;
 
+	public $active;
+
 	public $name;
 
 	public $address;
@@ -95,6 +97,7 @@ class Venue extends VenueModel implements JsonSerializable {
 
 		return [
 			'name'       => $venue->name,
+			'active'     => $venue->active,
 			'address_id' => $address->id
 		];
 
@@ -127,7 +130,8 @@ class Venue extends VenueModel implements JsonSerializable {
 	public static function create( Venue $venue, Address $address ): string {
 
 		$model = VenueModel::create( [
-			'name' => $venue->name,
+			'name'       => $venue->name,
+			'active'     => true,
 			'address_id' => $address->id
 		] );
 
@@ -197,6 +201,8 @@ class Venue extends VenueModel implements JsonSerializable {
 
 		$query->take( $take );
 
+		$query->where('active', 1);
+
 		$query->getConnection()->enableQueryLog();
 
 		$result = $query->get()
@@ -237,6 +243,15 @@ class Venue extends VenueModel implements JsonSerializable {
 		}
 
 		return $venue;
+	}
+
+	/**
+	 * Set Active value to false
+	 */
+	public function softDelete() {
+
+		VenueModel::softDeleteModel( $this->id );
+
 	}
 }
 

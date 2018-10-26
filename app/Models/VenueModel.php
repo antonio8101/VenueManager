@@ -19,7 +19,7 @@ class VenueModel extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'id', 'name', 'address_id',
+		'id', 'active', 'name', 'address_id',
 	];
 
 	/**
@@ -37,6 +37,22 @@ class VenueModel extends Model
 	public function address()
 	{
 		return $this->hasOne('App\Models\AddressModel', 'id', 'address_id');
+	}
+
+
+	/**
+	 * Set Active value to false
+	 *
+	 * @param string $id
+	 */
+	public static function softDeleteModel( string $id ) {
+
+		$model = VenueModel::where( 'id', $id )->first();
+
+		$model->active = 0;
+
+		$model->save();
+
 	}
 
 }

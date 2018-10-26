@@ -23,6 +23,8 @@ class VenueFactory {
 
 		$venue->name = $data['name'];
 
+		$venue->active = true;
+
 		$venue->setAddress( $data['address'] );
 
 		$venue->id = $id;

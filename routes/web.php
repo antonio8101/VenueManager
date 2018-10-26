@@ -24,9 +24,11 @@ Route::get( '/api/user/get/{id}', 'Api\UserController@getOneUserQuery' )->name('
 Route::any( '/api/user/search', 'Api\UserController@getUsersQuery' )->name('UsersQuery');
 Route::any( '/api/user/create', 'Api\UserController@createUserCommand' )->name('CreateUserCommand');
 Route::any( '/api/user/edit', 'Api\UserController@editUserCommand' )->name('EditUserCommand');
+Route::any( '/api/user/delete', 'Api\VenueController@deleteUserCommand' )->name('DeleteUserCommand');
 
 /** API VENUE */
 Route::get( '/api/venue/get/{id}', 'Api\VenueController@getOneVenueQuery' )->name('GetOneVenueQuery');
 Route::any( '/api/venue/search', 'Api\VenueController@getVenuesQuery' )->name('VenuesQuery');
 Route::any( '/api/venue/create', 'Api\VenueController@createVenueCommand' )->name('CreateVenueCommand');
 Route::any( '/api/venue/edit', 'Api\VenueController@editVenueCommand' )->name('EditVenueCommand');
+Route::any( '/api/venue/delete', 'Api\VenueController@deleteVenueCommand' )->name('DeleteVenueCommand');
