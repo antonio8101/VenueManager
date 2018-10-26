@@ -25,3 +25,7 @@ The application view is responsive, and uses the Ui framework `Boostrap`.
 - Run `Npm install`
 - Configure `.env` file with your database server properties
 - Run `Php artisan app:install`
+
+##### DevTools
+In `Devtools` folder there's an export of a collection of api requests created in `Postman`.
+You can start the development by importing it in your Postman application <https://www.getpostman.com/>
