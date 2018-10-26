@@ -258,33 +258,37 @@ class User extends UserModel implements JsonSerializable {
 	 *
 	 * @return mixed
 	 */
-	public static function getList( $params = array() ){
+	public static function search( $params = array() ){
 
 		$skip  = $params['skip'] ?? 0;
 		$take  = $params['take'] ?? 100;
 		$roles = [];
 
-		return UserModel::where( 'id', '>', 0 )
-		                ->where( function ( $query ) use ( $params, $roles ) {
+		$query = UserModel::where( 'id', '>', 0 )
+		                  ->where( function ( $query ) use ( $params, $roles ) {
 
-		                	if (isset($params['role'])) {
+			                  if (isset($params['role'])) {
 
-		                		$role =
-					                ( isset( $roles[ $params['role'] ] ) ) ?
-						                $roles[ $params['role'] ] :
-						                RoleModel::where( 'name', $params['role'] )->first();
+				                  $role =
+					                  ( isset( $roles[ $params['role'] ] ) ) ?
+						                  $roles[ $params['role'] ] :
+						                  RoleModel::where( 'name', $params['role'] )->first();
 
-				                $query->where( 'role_id', $role->id );
+				                  $query->where( 'role_id', $role->id );
 
-			                }
+			                  }
 
-		                } )
-		                ->skip( $skip )
-		                ->take( $take )
-		                ->get()
-		                ->map( function ( $item ) {
-			                return self::getFromModel( $item->id, $item );
-		                } );
+		                  } )
+		                  ->skip( $skip )
+		                  ->take( $take );
+
+		$results = $query->get()->map( function ( $item ) {
+			                  return self::getFromModel( $item->id, $item );
+		                  } );
+
+		Log::info( $query->toSql() );
+
+		return new QueryResult($results, $query->count(), $results->count() + $skip < $query->count());
 
 	}
 

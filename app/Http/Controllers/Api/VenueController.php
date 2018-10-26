@@ -11,7 +11,6 @@ use App\Models\Venue;
 use App\Models\VenueFactory;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 class VenueController extends ApiBase
 {
@@ -42,7 +41,7 @@ class VenueController extends ApiBase
 
 		    $this->validateGeoParams( $params );
 
-		    $venues = Venue::getList( $params );
+		    $venues = Venue::search( $params );
 
 		    return $this->goodResponse( $venues );
 

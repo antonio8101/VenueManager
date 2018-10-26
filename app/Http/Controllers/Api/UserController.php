@@ -49,7 +49,7 @@ class UserController extends ApiBase
 
 	    $params = $request->only('role', 'skip', 'take');
 
-	    $users = User::getList( $params );
+	    $users = User::search( $params );
 
 	    return $this->goodResponse( $users );
     }

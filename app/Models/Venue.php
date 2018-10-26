@@ -8,6 +8,7 @@
 
 namespace App\Models;
 
+use App\Models\QueryResult;
 use Carbon\Carbon;
 use function foo\func;
 use Illuminate\Support\Collection;
@@ -136,9 +137,9 @@ class Venue extends VenueModel implements JsonSerializable {
 	 *
 	 * @param array $params
 	 *
-	 * @return Collection Venue
+	 * @return QueryResult
 	 */
-	public static function getList( $params = array() ) {
+	public static function search( $params = array() ) {
 
 		$skip = $params['skip'] ?? 0;
 		$take = $params['take'] ?? 100;
@@ -150,15 +151,16 @@ class Venue extends VenueModel implements JsonSerializable {
 		$name = $params['name'] ?? null;
 		$userIdMatchingVenuesIds = [];
 
-
+		Log::info(json_encode($params));
 
 		$query = VenueModel::where('venues.id', '>', 0);
 
 		if ( !is_null($addressCity) || (!is_null($addressLongitude) && !is_null($addressLatitude)) ) {
-			$query->join('addresses', 'addresses.id', '=', 'venues.id');
+			$query->join('addresses', 'addresses.id', '=', 'venues.address_id');
 
 			if (!is_null($addressCity))
-				$query->where('addresses.city', 'like', '%' . $addressCity . '%');
+				$query->where('addresses.city',  $addressCity);
+				//$query->where('addresses.city', 'like', '%' . $addressCity . '%');
 
 			if (!is_null($addressLongitude) && !is_null($addressLatitude)) {
 
@@ -205,8 +207,9 @@ class Venue extends VenueModel implements JsonSerializable {
 
 		Log::info( $query->toSql()  );
 
-		return $result;
+		$totalResults = $query->count();
 
+		return new QueryResult( $result, $totalResults, $result->count() + $skip < $totalResults );
 
 	}
 

@@ -8,12 +8,12 @@
 
 namespace App\Models;
 
+use App\Exceptions\SessionExpiredException;
 use App\GlobalConsts;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use JsonSerializable;
-use Throwable;
 
 class LoginTable extends LoginTableModel implements JsonSerializable {
 
@@ -173,7 +173,7 @@ class LoginTable extends LoginTableModel implements JsonSerializable {
 	/**
 	 * Update the last activity date
 	 *
-	 * @throws \App\Exceptions\SessionExpiredException
+	 * @throws SessionExpiredException
 	 */
 	public function nowStoreLastActivity() {
 
@@ -191,7 +191,7 @@ class LoginTable extends LoginTableModel implements JsonSerializable {
 
 			$this->makeInactive();
 
-			throw new \App\Exceptions\SessionExpiredException( "Session is expired. LastTime activity is greater than <" . $this->duration . "> milliseconds");
+			throw new SessionExpiredException( "Session is expired. LastTime activity is greater than <" . $this->duration . "> milliseconds");
 
 		}
 
