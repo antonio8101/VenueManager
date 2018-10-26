@@ -17,6 +17,9 @@ use JsonSerializable;
 
 class User extends UserModel implements JsonSerializable {
 
+	use SerializationTrait;
+
+
 	// STRING TYPES
 
 	public $id;
@@ -41,9 +44,9 @@ class User extends UserModel implements JsonSerializable {
 
 	public $birthDate;
 
-	public $created;
+	public $created_at;
 
-	public $updated;
+	public $updated_at;
 
 	/**
 	 * @param string $password
@@ -69,26 +72,12 @@ class User extends UserModel implements JsonSerializable {
 			$model->firstName, $model->lastName, $model->password,
 			$model->email, Carbon::parse( $model->birth_date ), $role );
 
-		$user->id           = $id;
-		$user->profileImage = $model->profile_image;
-		$user->created      = $model->created_at;
-		$user->updated      = $model->updated_at;
+		$user->id              = $id;
+		$user->profileImage    = $model->profile_image;
+		$user->created_at      = $model->created_at;
+		$user->updated_at      = $model->updated_at;
 
 		return $user;
-	}
-
-	public function jsonSerialize() {
-		return [
-			'id'           => $this->id,
-			'firstName'    => $this->firstName,
-			'lastName'     => $this->lastName,
-			'email'        => $this->email,
-			'birthDate'    => $this->birthDate,
-			'role'         => $this->role,
-			'profileImage' => $this->profileImage,
-			'created'      => $this->created,
-			'updated'      => $this->updated
-		];
 	}
 
 	/**
@@ -240,8 +229,8 @@ class User extends UserModel implements JsonSerializable {
 		$id = User::create( $this );
 
 		$this->id = $id;
-		$this->created = Carbon::now();
-		$this->updated = Carbon::now();
+		$this->created_at = Carbon::now();
+		$this->updated_at = Carbon::now();
 
 	}
 

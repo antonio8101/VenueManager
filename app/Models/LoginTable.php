@@ -17,6 +17,9 @@ use Throwable;
 
 class LoginTable extends LoginTableModel implements JsonSerializable {
 
+	use SerializationTrait;
+
+
 	public $id;
 
 	public $user;
@@ -29,16 +32,6 @@ class LoginTable extends LoginTableModel implements JsonSerializable {
 
 	public $lastActivity; // datetime
 
-	public function jsonSerialize() {
-		return [
-			'id'           => $this->id,
-			'user'         => $this->user,
-			'token'        => $this->token,
-			'active'       => $this->active,
-			'duration'     => $this->duration,
-			'lastActivity' => $this->lastActivity
-		];
-	}
 
 	/**
 	 * @param $id

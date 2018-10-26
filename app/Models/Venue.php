@@ -8,11 +8,13 @@
 
 namespace App\Models;
 
-use App\Facades\VenueFactory;
 use Carbon\Carbon;
 use JsonSerializable;
 
 class Venue extends VenueModel implements JsonSerializable {
+
+	use SerializationTrait;
+
 
 	public $id;
 
@@ -20,17 +22,10 @@ class Venue extends VenueModel implements JsonSerializable {
 
 	public $address;
 
-	public $created;
+	public $created_at;
 
-	public $updated;
+	public $updated_at;
 
-	public function jsonSerialize() {
-		return [
-			'id'      => $this->id,
-			'name'    => $this->name,
-			'address' => $this->address
-		];
-	}
 
 	/** STRONGLY TYPED FIELD */
 
@@ -77,8 +72,8 @@ class Venue extends VenueModel implements JsonSerializable {
 
 		$this->id = $id;
 		$this->address->id = $addressId;
-		$this->created = Carbon::now();
-		$this->updated = Carbon::now();
+		$this->created_at = Carbon::now();
+		$this->updated_at = Carbon::now();
 
 	}
 
@@ -107,9 +102,7 @@ class Venue extends VenueModel implements JsonSerializable {
 
 		$model = VenueModel::find($id);
 
-		$address = Address::find($model->address_id);
-
-		$venue = VenueFactory::get(['name' => $model->name, 'address' => $address], $id);
+		$venue = self::getFromModel( $model );
 
 		return $venue;
 
@@ -170,7 +163,7 @@ class Venue extends VenueModel implements JsonSerializable {
 		->skip( $skip )
 		->take( $take )
 		->map( function ( $item ) {
-			return self::getFromModel( $item->id, $item );
+			return self::getFromModel( $item );
 		});
 
 	}
@@ -178,19 +171,23 @@ class Venue extends VenueModel implements JsonSerializable {
 	/**
 	 * Gets the domain object from a Venue Model
 	 *
-	 * @param string $id
 	 * @param $model
 	 *
 	 * @return mixed
 	 */
-	protected static function getFromModel( string $id, $model ) {
+	protected static function getFromModel( $model ) {
 
 		$address = Address::find( $model->address_id );
 
-		$venue = VenueFactory::get( [
-			'name' => $model->name,
-			'address' => $address
-		], $id );
+		$venue = new Venue();
+
+		$model->address = $address;
+
+		foreach ( $venue as $field => $value ) {
+
+			$venue->$field = $model->$field;
+
+		}
 
 		return $venue;
 	}

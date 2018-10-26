@@ -25,6 +25,20 @@ class UserController extends ApiBase
     }
 
 	/**
+	 * Returns a User matching with $id
+	 *
+	 * @param GetOneUserQuery $request
+	 *
+	 * @return response
+	 */
+	public function getOneUserQuery(GetOneUserQuery $request){
+
+		$user = User::find( $request->id  );
+
+		return $this->goodResponse( $user );
+	}
+
+	/**
 	 * Returns the users list
 	 *
 	 * @param UsersQuery $request
@@ -38,20 +52,6 @@ class UserController extends ApiBase
 	    $users = User::getList( $params );
 
 	    return $this->goodResponse( $users );
-    }
-
-	/**
-	 * Returns a User matching with $id
-	 *
-	 * @param GetOneUserQuery $request
-	 *
-	 * @return response
-	 */
-    public function getOneUserQuery(GetOneUserQuery $request){
-
-	    $user = User::find( $request->id  );
-
-	    return $this->goodResponse( $user );
     }
 
 	/**

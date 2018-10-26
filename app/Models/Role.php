@@ -12,9 +12,10 @@ use App\Facades\RoleFactory;
 use Illuminate\Support\Collection;
 use JsonSerializable;
 
-class Role extends RoleModel implements JsonSerializable {
+class Role extends RoleModel implements JsonSerializable
+{
 
-
+	use SerializationTrait;
 
 
 	public $id;
@@ -29,6 +30,7 @@ class Role extends RoleModel implements JsonSerializable {
 	 * @return mixed
 	 */
 	protected static function modelToDomainObect( $model ) {
+
 		$permissions = new Collection();
 
 		$rolePermissions = RolesPermissions::where( 'role_id', $model->id )->get();
@@ -44,14 +46,6 @@ class Role extends RoleModel implements JsonSerializable {
 		$role = RoleFactory::get( $model->name, $permissions, $model->id );
 
 		return $role;
-	}
-
-	public function jsonSerialize() {
-		return [
-			'id'          => $this->id,
-			'name'        => $this->name,
-			'permissions' => $this->permissions
-		];
 	}
 
 	/**
