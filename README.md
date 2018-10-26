@@ -8,3 +8,20 @@ The applications uses :
 - `MySQL` as Database (of course it depends from the configuration)
 
 The application view is responsive, and uses the Ui framework `Boostrap`.
+
+## Installation 
+
+##### Requirements
+
+- `PHP 7.2`
+- `Composer`
+- `NPM`
+-  A `SQL` database (`MySQL`, `SQL Server` ..)
+
+##### Installation steps
+
+- Download the code.
+- Run `Composer install`
+- Run `Npm install`
+- Configure `.env` file with your database server properties
+- Run `Php artisan app:install`
