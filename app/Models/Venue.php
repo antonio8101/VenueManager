@@ -9,6 +9,10 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use function foo\func;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use JsonSerializable;
 
 class Venue extends VenueModel implements JsonSerializable {
@@ -131,40 +135,63 @@ class Venue extends VenueModel implements JsonSerializable {
 	 * Returns a list of Venues domain objects
 	 *
 	 * @param array $params
+	 *
+	 * @return Collection Venue
 	 */
 	public static function getList( $params = array() ) {
 
 		$skip = $params['skip'] ?? 0;
-		$take = $params['take'] ?? 0;
+		$take = $params['take'] ?? 100;
 		$userId = $params['user_id'] ?? null;
 		$addressLatitude = $params['latitude'] ?? null;
 		$addressLongitude = $params['latitude'] ?? null;
-		$addressCity = $params['city'];
-
-		if (!is_null( $addressLongitude ) && !is_null( $addressLatitude )) {
-
-			// Search for coordinates
-
-		}
-
-		if (!is_null( $addressCity )) {
-
-			// Search for city
-
-		}
+		$addressCity = $params['city'] ?? null;
+		$name = $params['name'] ?? null;
+		$userIdMatchingVenuesIds = [];
 
 		if (!is_null( $userId )) {
 
-			// UserId
+			// TODO : Get $userIdMatchingVenuesIds
 
 		}
 
-		VenueModel::where('id', '>', 0)
-		->skip( $skip )
-		->take( $take )
-		->map( function ( $item ) {
-			return self::getFromModel( $item );
-		});
+		$query = VenueModel::where('venues.id', '>', 0);
+
+		if ( !is_null($addressCity) || (!is_null($addressLongitude) && !is_null($addressLatitude)) ) {
+			$query->join('addresses', 'addresses.id', '=', 'venues.id');
+
+			if (!is_null($addressCity))
+				$query->where('addresses.city', 'like', '%' . $addressCity . '%');
+
+			if (!is_null($addressLongitude) && !is_null($addressLatitude))
+				$query->where('addresses.latitude', $addressLatitude )->where('addresses.longitude', $addressLongitude );
+
+		}
+
+		if (!is_null($name)) {
+
+			$query->where('venues.name', $name );
+
+		}
+
+		$query->skip( $skip );
+
+		$query->take( $take );
+
+		$query->getConnection()->enableQueryLog();
+
+		$result = $query->get()
+		      ->filter( function ($item) {
+			      return $item;
+		      })
+		      ->map( function ( $item ) {
+			      return self::getFromModel( $item );
+		      });
+
+		Log::info( $query->toSql()  );
+
+		return $result;
+
 
 	}
 

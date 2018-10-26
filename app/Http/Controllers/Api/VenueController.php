@@ -9,7 +9,9 @@ use App\Http\Requests\VenuesQuery;
 use App\Models\Address;
 use App\Models\Venue;
 use App\Models\VenueFactory;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class VenueController extends ApiBase
 {
@@ -34,12 +36,60 @@ class VenueController extends ApiBase
 	 */
     public function getVenuesQuery( VenuesQuery $request ){
 
-    	$params = $request->validated();
+    	try {
 
-    	$venues = Venue::getList( $params ); // TODO : Creates this method
+		    $params = $request->validated();
 
-    	return $this->goodResponse( $venues );
+		    $this->validateGeoParams( $params );
 
+		    $venues = Venue::getList( $params ); // TODO : Creates this method
+
+		    return $this->goodResponse( $venues );
+
+	    } catch ( Exception $e) {
+
+		    return $this->badResponse(400, $e->getMessage(), $e->validationErrors ?? array());
+
+	    }
+
+
+    }
+
+	/**
+	 * @param array $params
+	 *
+	 * @throws Exception
+	 */
+    protected function validateGeoParams( $params = array() ){
+
+    	$validationErrors = [];
+
+    	if (isset($params['longitude']) && !isset($params['latitude'])){
+
+    		$validationErrors['latitude'] = "latitude is required if longitude is given";
+
+	    }
+
+	    if (isset($params['latitude']) && !isset($params['longitude'])){
+
+    		$validationErrors['longitude'] = "longitude is required if latitude is given";
+
+	    }
+
+	    if (isset($params['latitude']) && isset($params['longitude']) && !isset($params['distance'])){
+
+		    $validationErrors['distance'] = "distance is required if latitude or longitude are given";
+
+	    }
+
+	    if (count($validationErrors) > 0 ){
+
+		    $exception = new Exception("The given data was invalid.");
+		    $exception->validationErrors = [ "validationErrors" => $validationErrors  ];
+
+		    throw $exception;
+
+	    }
     }
 
 	/**

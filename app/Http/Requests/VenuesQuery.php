@@ -34,8 +34,9 @@ class VenuesQuery extends ApiFormRequest {
 
 		return [
 			'user_id'   => 'exists:users,id',
-			'longitude' => 'Numeric|required_if:address.latitude',
-			'latitude'  => 'Numeric|required_if:address.longitude',
+			'longitude' => 'Numeric',
+			'latitude'  => 'Numeric',
+			'distance'  => 'Numeric',
 			'city'      => 'String',
 			'name'      => 'String',
 			'skip'      => 'Numeric',

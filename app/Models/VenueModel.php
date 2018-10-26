@@ -31,4 +31,12 @@ class VenueModel extends Model
 
 	];
 
+	/**
+	 * Get the phone record associated with the address.
+	 */
+	public function address()
+	{
+		return $this->hasOne('App\Models\AddressModel', 'id', 'address_id');
+	}
+
 }

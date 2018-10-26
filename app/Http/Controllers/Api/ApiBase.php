@@ -74,10 +74,21 @@ class ApiBase extends Controller {
 	 * @param string $httpStatusCode
 	 * @param string $message
 	 *
+	 * @param array $data
+	 *
 	 * @return response
 	 */
-	protected function badResponse( string $httpStatusCode, string $message ) {
-		$message = json_encode( [ "isValid" => false, "message" => $message ] );
+	protected function badResponse( string $httpStatusCode, string $message, $data = array() ) {
+
+		$response = [ "isValid" => false, "message" => $message ];
+
+		foreach ( $data as $field => $value ) {
+
+			$response[$field] = $value;
+
+		}
+
+		$message = json_encode( $response );
 
 		Log::error( "Dashboard/Api@badResponse : " . $message );
 
