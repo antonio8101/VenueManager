@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LoginTable;
-use App\Models\SessionExpiredException;
+use App\Exceptions\SessionExpiredException;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;

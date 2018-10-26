@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Models\LoginTable;
 use App\Models\PermissionModel;
-use App\Models\SessionExpiredException;
+use App\Exceptions\SessionExpiredException;
 use App\Models\User;
 use App\Models\UserModel;
 use Exception;

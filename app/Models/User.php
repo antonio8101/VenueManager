@@ -79,17 +79,15 @@ class User extends UserModel implements JsonSerializable {
 
 	public function jsonSerialize() {
 		return [
-			'User' => [
-				'id'           => $this->id,
-				'firstName'    => $this->firstName,
-				'lastName'     => $this->lastName,
-				'email'        => $this->email,
-				'birthDate'    => $this->birthDate,
-				'role'         => $this->role,
-				'profileImage' => $this->profileImage,
-				'created'      => $this->created,
-				'updated'      => $this->updated,
-			]
+			'id'           => $this->id,
+			'firstName'    => $this->firstName,
+			'lastName'     => $this->lastName,
+			'email'        => $this->email,
+			'birthDate'    => $this->birthDate,
+			'role'         => $this->role,
+			'profileImage' => $this->profileImage,
+			'created'      => $this->created,
+			'updated'      => $this->updated
 		];
 	}
 

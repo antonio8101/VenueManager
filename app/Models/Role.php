@@ -48,11 +48,9 @@ class Role extends RoleModel implements JsonSerializable {
 
 	public function jsonSerialize() {
 		return [
-			'Role' => [
-				'id'          => $this->id,
-				'name'        => $this->name,
-				'permissions' => $this->permissions
-			]
+			'id'          => $this->id,
+			'name'        => $this->name,
+			'permissions' => $this->permissions
 		];
 	}
 

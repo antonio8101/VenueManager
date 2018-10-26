@@ -33,7 +33,6 @@ class Address extends AddressModel implements JsonSerializable  {
 	public function jsonSerialize() {
 
 		return [
-
 			'id'          => $this->id,
 			'name'        => $this->name,
 			'street'      => $this->street,
@@ -43,7 +42,6 @@ class Address extends AddressModel implements JsonSerializable  {
 			'countryName' => $this->countryName,
 			'latitude'    => $this->latitude,
 			'longitude'   => $this->longitude
-
 		];
 	}
 

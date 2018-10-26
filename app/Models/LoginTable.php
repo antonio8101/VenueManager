@@ -31,14 +31,12 @@ class LoginTable extends LoginTableModel implements JsonSerializable {
 
 	public function jsonSerialize() {
 		return [
-			'LoginTable' => [
-				'id'           => $this->id,
-				'user'         => $this->user,
-				'token'        => $this->token,
-				'active'       => $this->active,
-				'duration'     => $this->duration,
-				'lastActivity' => $this->lastActivity,
-			]
+			'id'           => $this->id,
+			'user'         => $this->user,
+			'token'        => $this->token,
+			'active'       => $this->active,
+			'duration'     => $this->duration,
+			'lastActivity' => $this->lastActivity
 		];
 	}
 
@@ -182,7 +180,7 @@ class LoginTable extends LoginTableModel implements JsonSerializable {
 	/**
 	 * Update the last activity date
 	 *
-	 * @throws SessionExpiredException
+	 * @throws \App\Exceptions\SessionExpiredException
 	 */
 	public function nowStoreLastActivity() {
 
@@ -200,7 +198,7 @@ class LoginTable extends LoginTableModel implements JsonSerializable {
 
 			$this->makeInactive();
 
-			throw new SessionExpiredException("Session is expired. LastTime activity is greater than <" . $this->duration . "> milliseconds");
+			throw new \App\Exceptions\SessionExpiredException( "Session is expired. LastTime activity is greater than <" . $this->duration . "> milliseconds");
 
 		}
 
@@ -212,18 +210,3 @@ class LoginTable extends LoginTableModel implements JsonSerializable {
 
 }
 
-class SessionExpiredException extends Exception {
-
-	public function __construct( string $message = "", int $code = 0, Throwable $previous = null ) {
-		parent::__construct( $message, $code, $previous );
-	}
-
-	public function __toString() {
-		return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
-	}
-
-	public function customFunction() {
-		echo "A custom function for this type of exception\n";
-	}
-
-}

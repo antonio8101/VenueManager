@@ -36,10 +36,8 @@ class Permission extends PermissionModel implements JsonSerializable {
 
 	public function jsonSerialize() {
 		return [
-			'Permission' => [
-				'id'           => $this->id,
-				'firstName'    => $this->name
-			]
+			'id'           => $this->id,
+			'firstName'    => $this->name
 		];
 	}
 

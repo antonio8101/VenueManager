@@ -26,11 +26,9 @@ class Venue extends VenueModel implements JsonSerializable {
 
 	public function jsonSerialize() {
 		return [
-			'Venue' => [
-				'id'      => $this->id,
-				'name'    => $this->name,
-				'address' => $this->address,
-			]
+			'id'      => $this->id,
+			'name'    => $this->name,
+			'address' => $this->address
 		];
 	}
 
