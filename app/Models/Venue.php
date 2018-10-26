@@ -150,11 +150,7 @@ class Venue extends VenueModel implements JsonSerializable {
 		$name = $params['name'] ?? null;
 		$userIdMatchingVenuesIds = [];
 
-		if (!is_null( $userId )) {
 
-			// TODO : Get $userIdMatchingVenuesIds
-
-		}
 
 		$query = VenueModel::where('venues.id', '>', 0);
 
@@ -179,6 +175,11 @@ class Venue extends VenueModel implements JsonSerializable {
 
 			}
 
+		}
+
+		if (!is_null( $userId )) {
+
+			// TODO : Get $userIdMatchingVenuesIds
 
 		}
 
