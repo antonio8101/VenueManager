@@ -145,6 +145,7 @@ class Venue extends VenueModel implements JsonSerializable {
 		$userId = $params['user_id'] ?? null;
 		$addressLatitude = $params['latitude'] ?? null;
 		$addressLongitude = $params['latitude'] ?? null;
+		$distance = $params['distance'] ?? null;
 		$addressCity = $params['city'] ?? null;
 		$name = $params['name'] ?? null;
 		$userIdMatchingVenuesIds = [];
@@ -163,8 +164,21 @@ class Venue extends VenueModel implements JsonSerializable {
 			if (!is_null($addressCity))
 				$query->where('addresses.city', 'like', '%' . $addressCity . '%');
 
-			if (!is_null($addressLongitude) && !is_null($addressLatitude))
-				$query->where('addresses.latitude', $addressLatitude )->where('addresses.longitude', $addressLongitude );
+			if (!is_null($addressLongitude) && !is_null($addressLatitude)) {
+
+				$extensionInKm = $distance * 0.033336;
+
+				Log::info("Extension " . $extensionInKm );
+
+				$query->whereBetween('latitude',array( $addressLatitude - $extensionInKm,  $addressLatitude + $extensionInKm ));
+				$query->whereBetween('longitude',array( $addressLongitude - $extensionInKm,  $addressLongitude + $extensionInKm ));
+
+				//	SELECT * FROM venues  WHERE
+				//	latitude BETWEEN ({$latitude} - ({$miles}*0.033336)) AND ({$latitude} + ({$miles}*0.033336)) AND
+				//	longitude BETWEEN ({$longitude} - ({$miles}*0.033336)) AND ({$longitude} + ({$miles}*0.033336));
+
+			}
+
 
 		}
 

@@ -42,7 +42,7 @@ class VenueController extends ApiBase
 
 		    $this->validateGeoParams( $params );
 
-		    $venues = Venue::getList( $params ); // TODO : Creates this method
+		    $venues = Venue::getList( $params );
 
 		    return $this->goodResponse( $venues );
 
@@ -56,6 +56,8 @@ class VenueController extends ApiBase
     }
 
 	/**
+	 * Validates Geo params - Throws exception is some rule is violated
+	 *
 	 * @param array $params
 	 *
 	 * @throws Exception
