@@ -13,6 +13,7 @@ use App\Models\User;
 use App\UserModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class UserController extends ApiBase
@@ -49,6 +50,9 @@ class UserController extends ApiBase
 	public function deleteUserCommand( DeleteOneUserCommand $request ){
 
 		$user = User::find( $request->id );
+
+		if ($user->id == Auth::id())
+			return $this->badResponse(400, "User can't delete user with same id <$user->id>");
 
 		$user->softDelete();
 

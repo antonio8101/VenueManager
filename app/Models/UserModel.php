@@ -28,4 +28,10 @@ class UserModel extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    public static function softDeleteModel( $id ){
+
+    	UserModel::find( $id )->fill(['active' => false])->save();
+    }
+
 }

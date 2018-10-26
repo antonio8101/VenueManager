@@ -328,6 +328,14 @@ class User extends UserModel implements JsonSerializable {
 
 	}
 
+	/**
+	 * Delete by set the active flag to false
+	 */
+	public function softDelete(){
+
+		UserModel::softDeleteModel($this->id);
+
+	}
 
 }
 
