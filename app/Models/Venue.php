@@ -71,12 +71,14 @@ class Venue extends VenueModel implements JsonSerializable {
 
 		}
 
-		$addressId = Address::create( $this->address );
+		$address = Address::find( Address::create( $this->address ) );
 
-		$id = Venue::create( $this, Address::find( $addressId ) );
+		$id = Venue::create( $this, $address );
 
 		$this->id = $id;
-		$this->address->id = $addressId;
+		$this->address->id = $address->id;
+		$this->address->created_at = $address->created_at;
+		$this->address->updated_at = $address->updated_at;
 		$this->created_at = Carbon::now();
 		$this->updated_at = Carbon::now();
 
