@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\CreateVenueCommand;
+use App\Http\Requests\EditVenueCommand;
 use App\Http\Requests\GetOneVenueQuery;
 use App\Http\Requests\VenuesQuery;
 use App\Models\Address;
 use App\Models\Venue;
 use App\Models\VenueFactory;
+use Illuminate\Http\Request;
 
 class VenueController extends ApiBase
 {
@@ -46,7 +49,7 @@ class VenueController extends ApiBase
 	 *
 	 * @return response
 	 */
-    public function getOneVenueQuery(GetOneVenueQuery $request){
+    public function getOneVenueQuery( GetOneVenueQuery $request){
 
     	$venue = Venue::find( $request->id );
 
@@ -55,13 +58,15 @@ class VenueController extends ApiBase
     }
 
 	/**
-	 * API - Command : Creates a new Venue
+	 * Creates a new Venue
 	 *
-	 * @param array $venueData
+	 * @param CreateVenueCommand $request
 	 *
 	 * @return response
 	 */
-	public function createVenueCommand( $venueData = [] ) {
+	public function createVenueCommand( CreateVenueCommand $request ) {
+
+		$venueData = $request->validated();
 
 		$name = $venueData['name'];
 
@@ -69,20 +74,49 @@ class VenueController extends ApiBase
 
 		$venue = $this->factory->get( [ 'name' => $name, 'address' => $address ] );
 
-		$venue->save();
+		$venue->store();
 
-		return $this->goodResponse( "Venue entry stored correctly" );
+		return $this->goodResponse( $venue );
 
 	}
 
-    public function editVenueCommand($venueData = [], string $venueId){
+	/**
+	 * Edits the data of a Venue
+	 *
+	 * @param EditVenueCommand $request
+	 *
+	 * @return response
+	 */
+    public function editVenueCommand( EditVenueCommand $request ){
 
-		//
+	    $venueData = $request->validated();
 
+	    $name = $venueData['name'];
+
+	    $id = $venueData['id'];
+
+	    $venue = Venue::find( $id );
+
+	    $venue->name = $name;
+
+	    foreach ( $venue->address as $field => $value ) {
+
+		    if ( $field != 'id' && isset( $venueData[ $field ] ) ) {
+
+			    $venue->address->$field = $venueData[ $field ];
+
+		    }
+
+	    }
+
+	    $venue->store();
+
+	    return $this->goodResponse( $venue );
     }
 
 	/**
 	 * Inflates the given object with the given array of values (matching its property)
+	 *
 	 * @param array $data
 	 * @param object $object
 	 *
@@ -92,7 +126,7 @@ class VenueController extends ApiBase
 
 		foreach ( $object as $key => $value ) {
 
-			if ( ! empty( $data[ $key ] ) ) {
+			if ( isset( $data[ $key ] ) ) {
 
 				$object->$key = $data[ $key ];
 
