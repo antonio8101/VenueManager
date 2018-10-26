@@ -22,13 +22,13 @@
 				"header": [
 					{
 						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
+						"type": "text",
+						"value": "application/json"
 					},
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
+						"type": "text",
+						"value": "application/json"
 					}
 				],
 				"body": {
@@ -36,7 +36,7 @@
 					"raw": "{\n\t\"role\" : \"Admin\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8000/api/user/list",
+					"raw": "http://localhost:8000/api/user/search",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -45,7 +45,7 @@
 					"path": [
 						"api",
 						"user",
-						"list"
+						"search"
 					]
 				}
 			},
@@ -487,6 +487,59 @@
 						"venue",
 						"get",
 						"13"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1234",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SEARCH VENUES",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "2ca80a69372f3538ed8acf9c9c274ecc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"city\" : \"Genova\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/venue/search",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"venue",
+						"search"
 					],
 					"query": [
 						{
