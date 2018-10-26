@@ -66,17 +66,18 @@ class UsersRolePermissions extends Migration
 		    $table->foreign('user_id')->references('id')->on('users');
 	    });
 
-	    Schema::create('addresses', function (Blueprint $table) {
-		    $table->increments('id');
-		    $table->string('name')->nullable();
-		    $table->string('city');
-		    $table->string('street');
-		    $table->string('country_id'); // iso 3
-		    $table->string('country_name'); // iso 3
-		    $table->decimal('latitude');
-		    $table->decimal('longitue');
+	    Schema::create( 'addresses', function ( Blueprint $table ) {
+		    $table->increments( 'id' );
+		    $table->string( 'name' )->nullable();
+		    $table->string( 'city' );
+		    $table->string( 'street' );
+		    $table->string( 'countryId' ); // iso 3
+		    $table->string( 'countryName' ); // iso 3
+		    $table->decimal( 'latitude' );
+		    $table->decimal( 'longitude' );
+		    $table->string( 'zipCode' )->nullable();
 		    $table->timestamps();
-	    });
+	    } );
 
 	    Schema::create('venues', function (Blueprint $table) {
 		    $table->increments('id');

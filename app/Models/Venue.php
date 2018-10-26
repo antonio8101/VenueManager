@@ -9,14 +9,30 @@
 namespace App\Models;
 
 use App\Facades\VenueFactory;
+use Carbon\Carbon;
+use JsonSerializable;
 
-class Venue extends VenueModel {
+class Venue extends VenueModel implements JsonSerializable {
 
 	public $id;
 
 	public $name;
 
-	private $address;
+	public $address;
+
+	public $created;
+
+	public $updated;
+
+	public function jsonSerialize() {
+		return [
+			'Venue' => [
+				'id'      => $this->id,
+				'name'    => $this->name,
+				'address' => $this->address,
+			]
+		];
+	}
 
 	/** STRONGLY TYPED FIELD */
 
@@ -37,35 +53,51 @@ class Venue extends VenueModel {
 	}
 
 	/**
-	 * @param array $options
-	 *
-	 * @return bool
+	 * Creates or Updates a Venue in DB
 	 */
-	public function save( array $options = [] ) {
+	public function store(): void {
 
-		if ( is_null( $this->id ) ) {
+		if ( !is_null( $this->id ) ) {
 
-			$id = Venue::create( $this );
+			$attributes = self::getVenueAttributes( $this );
 
-			$this->id = $id;
+			$model = VenueModel::find( $this->id );
 
-			return true;
+			$this->address->store();
 
-		} else {
+			$model->fill( $attributes );
 
-			$addressId = $this->address->id;
+			$model->save();
 
-			if ( is_null( $addressId ) ) {
-
-				throw new \InvalidArgumentException( "The Venue has not a valid Address" );
-
-			}
-
-			$this->address_id = $addressId;
-
-			return parent::save( $options );
+			return;
 
 		}
+
+		$addressId = Address::create( $this->address );
+
+		$id = Venue::create( $this, Address::find( $addressId ) );
+
+		$this->id = $id;
+		$this->address->id = $addressId;
+		$this->created = Carbon::now();
+		$this->updated = Carbon::now();
+
+	}
+
+	/**
+	 * @param Venue $venue
+	 *
+	 * @return array
+	 */
+	protected static function getVenueAttributes( Venue $venue ): array {
+
+		$address = $venue->address;
+
+		return [
+			'name'       => $venue->name,
+			'address_id' => $address->id
+		];
+
 	}
 
 	/**
@@ -90,15 +122,15 @@ class Venue extends VenueModel {
 	 *
 	 * @param Venue $venue
 	 *
+	 * @param Address $address
+	 *
 	 * @return string
 	 */
-	public static function create( Venue $venue ): string {
-
-		$addressId = Address::create( $venue->address );
+	public static function create( Venue $venue, Address $address ): string {
 
 		$model = VenueModel::create( [
 			'name' => $venue->name,
-			'address_id' => $addressId
+			'address_id' => $address->id
 		] );
 
 		return $model->id;

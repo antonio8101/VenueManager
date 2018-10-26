@@ -139,7 +139,12 @@ class User extends UserModel implements JsonSerializable {
 		return $model->id;
 	}
 
-	public static function getUserAttributes( User $user ){
+	/**
+	 * @param User $user
+	 *
+	 * @return array
+	 */
+	public static function getUserAttributes( User $user ): array {
 
 		$role = $user->role;
 
@@ -210,7 +215,7 @@ class User extends UserModel implements JsonSerializable {
 
 
 	/**
-	 * Create or Update a User in DB
+	 * Creates or Updates a User in DB
 	 *
 	 * @return void
 	 */

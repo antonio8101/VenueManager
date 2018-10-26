@@ -8,7 +8,9 @@
 
 namespace App\Models;
 
-class Address extends AddressModel {
+use JsonSerializable;
+
+class Address extends AddressModel implements JsonSerializable  {
 
 	public $id;
 
@@ -28,6 +30,22 @@ class Address extends AddressModel {
 
 	public $longitude;
 
+	public function jsonSerialize() {
+
+		return [
+
+			'id'          => $this->id,
+			'name'        => $this->name,
+			'street'      => $this->street,
+			'city'        => $this->city,
+			'zipCode'     => $this->zipCode,
+			'countryId'   => $this->countryId,
+			'countryName' => $this->countryName,
+			'latitude'    => $this->latitude,
+			'longitude'   => $this->longitude
+
+		];
+	}
 
 	/**
 	 * Create a new Address @override
@@ -36,17 +54,11 @@ class Address extends AddressModel {
 	 *
 	 * @return string
 	 */
-	public static function create(Address $address) : string {
+	public static function create( Address $address ): string {
 
-		$model = AddressModel::create( [
-			'name' => $address->name,
-			'city' => $address->city,
-			'zip_code' => $address->zipCode,
-			'country_id' => $address->countryId,
-			'country_name' => $address->countryName,
-			'latitude' => $address->latitude,
-			'longitude' => $address->longitude
-		] );
+		$addressAttributes = self::getAddressAttributes( $address );
+
+		$model = AddressModel::create( $addressAttributes );
 
 		return $model->id;
 	}
@@ -89,5 +101,54 @@ class Address extends AddressModel {
 		$address->latitude  = $model->latitude;
 
 		return $address;
+	}
+
+	/**
+	 * Model Attributes from Domain object
+	 *
+	 * @param Address $address
+	 *
+	 * @return array
+	 */
+	protected static function getAddressAttributes( Address $address ): array {
+
+		$attributes = [];
+
+		foreach ($address as $field => $value) {
+
+			$attributes[$field] = $value;
+
+		}
+
+		return $attributes;
+
+	}
+
+
+	/**
+	 * Creates or Updates an Address in DB
+	 */
+	public function store(){
+
+		if (!is_null( $this->id )){
+
+			$attributes = self::getAddressAttributes( $this );
+
+			$model = AddressModel::find( $this->id );
+
+			$model->fill( $attributes );
+
+			$model->save();
+
+			return;
+
+		}
+
+		$id = Address::create( $this );
+
+		$this->id = $id;
+		$this->created = Carbon::now();
+		$this->updated = Carbon::now();
+
 	}
 }

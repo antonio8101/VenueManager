@@ -23,9 +23,9 @@ class AddressModel extends Model
 		'name',
 		'city',
 		'street',
-		'country_id',
-		'country_name',
-		'zip_code',
+		'countryId',
+		'countryName',
+		'zipCode',
 		'latitude',
 		'longitude'
 	];

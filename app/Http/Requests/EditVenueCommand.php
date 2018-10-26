@@ -2,13 +2,13 @@
 /**
  * Created by PhpStorm.
  * User: Antonio
- * Date: 24/10/2018
- * Time: 15:39
+ * Date: 25/10/2018
+ * Time: 14:08
  */
 
 namespace App\Http\Requests;
 
-class VenuesQuery extends ApiFormRequest {
+class EditVenueCommand extends ApiFormRequest {
 
 	use CustomAuthorizationTrait;
 
@@ -33,16 +33,17 @@ class VenuesQuery extends ApiFormRequest {
 	public function rules() {
 
 		return [
-			'user_id'   => 'exists:users,id',
-			'longitude' => 'Numeric|required_if:address.latitude',
-			'latitude'  => 'Numeric|required_if:address.longitude',
-			'city'      => 'String',
-			'name'      => 'String',
-			'skip'      => 'Numeric',
-			'take'      => 'Numeric'
+			'id'          => 'required|exists:venues',
+			'longitude'   => 'required|Numeric',
+			'latitude'    => 'required|Numeric',
+			'street'      => 'required|String',
+			'zipCode'     => 'required|String',
+			'countryId'   => 'required|String',
+			'countryName' => 'required|String',
+			'city'        => 'required|String',
+			'name'        => 'required|String'
 		];
 
 	}
 
 }
-
