@@ -8,7 +8,11 @@
 
 namespace App\Models;
 
+use Exception;
 use JsonSerializable;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionProperty;
 
 class Address extends AddressModel implements JsonSerializable  {
 
@@ -30,19 +34,43 @@ class Address extends AddressModel implements JsonSerializable  {
 
 	public $longitude;
 
+	public $created_at;
+
+	public $updated_at;
+
+
+	/**
+	 * Returns a serialization from all the data of the object
+	 * @return array|mixed
+	 * @throws Exception
+	 */
 	public function jsonSerialize() {
 
-		return [
-			'id'          => $this->id,
-			'name'        => $this->name,
-			'street'      => $this->street,
-			'city'        => $this->city,
-			'zipCode'     => $this->zipCode,
-			'countryId'   => $this->countryId,
-			'countryName' => $this->countryName,
-			'latitude'    => $this->latitude,
-			'longitude'   => $this->longitude
-		];
+		try {
+
+			$reflection = new ReflectionClass( $this );
+
+			$properties = array();
+
+			foreach ( $reflection->getProperties( ReflectionProperty::IS_PUBLIC ) as $property ) {
+
+				$prop = $reflection->getProperty($property->name);
+
+				if ( $reflection->getName() == $prop->class ) {
+
+					$properties[$property->name] = $prop->getValue( $this );
+
+				}
+			}
+
+			return $properties;
+
+		} catch ( ReflectionException $e ) {
+
+			throw new Exception("Serialization error when trying to serialize an instance of <" . get_class( $this ) . ">");
+
+		}
+
 	}
 
 	/**
@@ -73,30 +101,27 @@ class Address extends AddressModel implements JsonSerializable  {
 
 		$model = AddressModel::find( $id );
 
-		return self::getFromModel( $id, $model );
+		return self::getFromModel( $model );
 
 	}
 
 	/**
 	 * Returns the Address Domain Object from Model
 	 *
-	 * @param string $id
 	 * @param AddressModel $model
 	 *
 	 * @return mixed
 	 */
-	protected static function getFromModel( string $id, AddressModel $model ) {
+	protected static function getFromModel( AddressModel $model ) {
 
 		$address = new Address();
 
-		$address->id        = $id;
-		$address->name      = $model->name;
-		$address->city      = $model->city;
-		$address->street    = $model->street;
-		$address->countryId = $model->country_id;
-		$address->zipCode   = $model->zip_code;
-		$address->longitude = $model->longitude;
-		$address->latitude  = $model->latitude;
+		foreach ($address as $field => $value) {
+
+			if ( isset( $model->$field ) )
+				$address->$field = $model->$field;
+
+		}
 
 		return $address;
 	}
