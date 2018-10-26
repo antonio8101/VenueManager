@@ -113,7 +113,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "4feb16d85a9fbabdd19bd3bca2d77192",
+							"value": "b112e3f67a4c16d9e0c0a667d6914c7f",
 							"type": "string"
 						}
 					]
@@ -135,18 +135,18 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "firstname",
-							"value": "Mauro",
+							"key": "firstName",
+							"value": "John",
 							"type": "text"
 						},
 						{
-							"key": "surname",
-							"value": "Biglino",
+							"key": "lastName",
+							"value": "Doe",
 							"type": "text"
 						},
 						{
 							"key": "email",
-							"value": "smausro1svsssvkdd321@test.it",
+							"value": "john.doe@acme.it",
 							"type": "text"
 						},
 						{
@@ -527,7 +527,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"city\" : \"Genova\"\n}"
+					"raw": "{\n\t\"city\" : \"Pavia\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8000/api/venue/search",
@@ -540,6 +540,113 @@
 						"api",
 						"venue",
 						"search"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1234",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE ONE VENUE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "be33886e57b7f6f48885690fb83b2406",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/venue/get/13",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"venue",
+						"get",
+						"13"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1234",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE ONE USER",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "b112e3f67a4c16d9e0c0a667d6914c7f",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\" : 1\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/user/delete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user",
+						"delete"
 					],
 					"query": [
 						{
