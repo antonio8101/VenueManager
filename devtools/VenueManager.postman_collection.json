@@ -13,7 +13,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "008fddab1d44c40bf1c95a7ced50363e",
+							"value": "eb1fbf0917692fd3025030a6285b4c5b",
 							"type": "string"
 						}
 					]
@@ -33,7 +33,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"role\" : \"Admin\"\n}"
+					"raw": "{\n\t\"role\" : \"Admin\",\n\t\"venue_id\" : 3\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8000/api/user/search",
@@ -59,7 +59,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "008fddab1d44c40bf1c95a7ced50363e",
+							"value": "b112e3f67a4c16d9e0c0a667d6914c7f",
 							"type": "string"
 						}
 					]
@@ -113,7 +113,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "b112e3f67a4c16d9e0c0a667d6914c7f",
+							"value": "eb1fbf0917692fd3025030a6285b4c5b",
 							"type": "string"
 						}
 					]
@@ -285,7 +285,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "be33886e57b7f6f48885690fb83b2406",
+							"value": "eb1fbf0917692fd3025030a6285b4c5b",
 							"type": "string"
 						}
 					]
@@ -304,49 +304,8 @@
 					}
 				],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "firstName",
-							"value": "Test",
-							"type": "text"
-						},
-						{
-							"key": "lastName",
-							"value": "Moscovici",
-							"type": "text"
-						},
-						{
-							"key": "email",
-							"value": "tessst@test.it",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "testtest",
-							"type": "text"
-						},
-						{
-							"key": "role",
-							"value": "User",
-							"type": "text"
-						},
-						{
-							"key": "profileImage",
-							"type": "file",
-							"src": ""
-						},
-						{
-							"key": "birthDate",
-							"value": "1981-08-26",
-							"type": "text"
-						},
-						{
-							"key": "id",
-							"value": "9",
-							"type": "text"
-						}
-					]
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"Cfmt\",\n\t\"city\" : \"Milano\",\n\t\"street\" : \"Via decembrio 28\",\n\t\"countryId\" : \"ITA\",\n\t\"countryName\" : \"ITALIA\",\n\t\"zipCode\" : \"20137\",\n\t\"longitude\" : 2,\n\t\"latitude\" : 2\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8000/api/venue/create",
@@ -407,7 +366,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "a8939138d388a076442452f060722d91",
+							"value": "9e955195dbd9047d0b0d67d3c1e38b42",
 							"type": "string"
 						}
 					]
@@ -427,7 +386,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\" : \"Prova\",\n\t\"city\" : \"Milano\",\n\t\"street\" : \"Via tal dei tali 1\",\n\t\"countryId\" : \"ITA\",\n\t\"countryName\" : \"ITALIA\",\n\t\"zipCode\" : \"20100\",\n\t\"longitude\" : 0,\n\t\"latitude\" : 0,\n\t\"id\" : 1\n}"
+					"raw": "{\n\t\"id\" : 15,\n\t\"name\" : \"Pavia\",\n\t\"city\" : \"Milano\",\n\t\"street\" : \"Via tal dei tali 17\",\n\t\"countryId\" : \"ITA\",\n\t\"countryName\" : \"ITALIA\",\n\t\"zipCode\" : \"20100\",\n\t\"longitude\" : 2,\n\t\"latitude\" : 2\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8000/api/venue/edit",
@@ -507,7 +466,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "2ca80a69372f3538ed8acf9c9c274ecc",
+							"value": "eb1fbf0917692fd3025030a6285b4c5b",
 							"type": "string"
 						}
 					]
@@ -527,7 +486,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"city\" : \"Pavia\"\n}"
+					"raw": "{\n\t\"user_id\" : 1\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8000/api/venue/search",
@@ -634,7 +593,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"id\" : 1\n}"
+					"raw": "{\n\t\"id\" : 3\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8000/api/user/delete",
@@ -647,6 +606,59 @@
 						"api",
 						"user",
 						"delete"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1234",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USERVENUE CREATE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eb1fbf0917692fd3025030a6285b4c5b",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"user_id\" : 2,\n\t\"venue_id\": 2\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/uservenue/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"uservenue",
+						"create"
 					],
 					"query": [
 						{
