@@ -24,7 +24,8 @@ The application view is responsive, and uses the Ui framework `Boostrap`.
 - Run `Composer install`
 - Run `Npm install`
 - Configure `.env` file with your database server properties
-- Run `Php artisan app:install`
+- Run the command `php artisan app:install` to install configure the application (by running database migrations and seeding)
+- Run the command `php artisan app:serve` to use the application without have to configure a web server (the application with start at <http://localhost:8000>)
 
 ##### DevTools
 In `Devtools` folder there's an export of a collection of api requests created in `Postman`.
