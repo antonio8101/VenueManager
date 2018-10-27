@@ -48,7 +48,7 @@ class InstallApplication extends Command
 
 		$this->comment( "Installing application..." );
 
-		#$this->confirm("This process will destroy the existing DB: do you want to proceed?", false);
+		$this->confirm("This process will destroy the existing DB: do you want to proceed?", false);
 
 		Artisan::call( 'migrate:refresh', [
 			'--force' => true,
