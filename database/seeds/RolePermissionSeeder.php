@@ -13,7 +13,6 @@ class RolePermissionSeeder extends Seeder
     {
 	    $userPermissions = [
 		    'CanViewMap',
-
 	    ];
 	    $superVisorPermissions = [
 		    'CanManageUsers',
@@ -21,8 +20,10 @@ class RolePermissionSeeder extends Seeder
 	    ];
 	    $adminPermissions = [
 		    'CanCreateUsers',
+		    'CanEditUsers',
 		    'CanDeleteUsers',
 		    'CanCreateVenues',
+		    'CanEditVenues',
 		    'CanDeleteVenues',
 	    ];
 

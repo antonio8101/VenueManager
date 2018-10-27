@@ -12,7 +12,7 @@ class EditVenueCommand extends ApiFormRequest {
 
 	use CustomAuthorizationTrait;
 
-	protected $abilities = [ 'CanManageVenues' ];
+	protected $abilities = [ 'CanEditVenues' ];
 
 	/**
 	 * Determine if the user is authorized to make this request.

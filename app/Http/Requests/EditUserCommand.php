@@ -14,7 +14,7 @@ class EditUserCommand extends ApiFormRequest {
 
 	use CustomAuthorizationTrait;
 
-	protected $abilities = [ 'CanManageUsers' ];
+	protected $abilities = [ 'CanEditUsers' ];
 
 	/**
 	 * Determine if the user is authorized to make this request.
