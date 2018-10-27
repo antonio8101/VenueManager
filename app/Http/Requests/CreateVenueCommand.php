@@ -8,6 +8,7 @@
 
 namespace App\Http\Requests;
 
+
 class CreateVenueCommand extends ApiFormRequest {
 
 	use CustomAuthorizationTrait;

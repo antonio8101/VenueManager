@@ -12,6 +12,8 @@ use JsonSerializable;
 
 class Permission extends PermissionModel implements JsonSerializable {
 
+	use SerializationTrait;
+
 	public $id;
 
 	public $name;
@@ -32,13 +34,6 @@ class Permission extends PermissionModel implements JsonSerializable {
 
 		return $permission;
 
-	}
-
-	public function jsonSerialize() {
-		return [
-			'id'           => $this->id,
-			'firstName'    => $this->name
-		];
 	}
 
 }

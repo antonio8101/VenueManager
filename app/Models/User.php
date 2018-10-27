@@ -260,13 +260,15 @@ class User extends UserModel implements JsonSerializable {
 	 *
 	 * @param array $params
 	 *
-	 * @return mixed
+	 * @return QueryResult
 	 */
 	public static function search( $params = array() ){
 
 		$skip  = $params['skip'] ?? 0;
 		$take  = $params['take'] ?? 100;
 		$roles = [];
+
+		// search users for venue id
 
 		$query = UserModel::where( 'id', '>', 0 )
 		                  ->where('active', 1)
@@ -283,13 +285,15 @@ class User extends UserModel implements JsonSerializable {
 
 			                  }
 
-		                  } )
-		                  ->skip( $skip )
-		                  ->take( $take );
-
-		$results = $query->get()->map( function ( $item ) {
-			                  return self::getFromModel( $item->id, $item );
 		                  } );
+
+		$results = $query
+			->skip( $skip )
+			->take( $take )
+			->get()
+			->map( function ( $item ) {
+              return self::getFromModel( $item->id, $item );
+          } );
 
 		Log::info( $query->toSql() );
 

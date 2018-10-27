@@ -197,15 +197,9 @@ class Venue extends VenueModel implements JsonSerializable {
 
 		}
 
-		$query->skip( $skip );
-
-		$query->take( $take );
-
 		$query->where('active', 1);
 
-		$query->getConnection()->enableQueryLog();
-
-		$result = $query->get()
+		$result = $query->skip( $skip )->take( $take )->get()
 		      ->filter( function ($item) {
 			      return $item;
 		      })

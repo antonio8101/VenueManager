@@ -92,6 +92,17 @@ class UsersRolePermissions extends Migration
 		    $table->foreign('address_id')->references('id')->on('addresses');
 	    });
 
+	    Schema::create('users_venues', function (Blueprint $table) {
+		    $table->increments('id');
+		    $table->unsignedInteger('user_id');
+		    $table->unsignedInteger('venue_id');
+		    $table->timestamps();
+	    });
+
+	    Schema::table('users_venues', function($table) {
+		    $table->foreign('venue_id')->references('id')->on('venues');
+		    $table->foreign('user_id')->references('id')->on('users');
+	    });
 	    // VenueToUser Relationship
     }
 
