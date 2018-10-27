@@ -155,7 +155,6 @@ class Venue extends VenueModel implements JsonSerializable {
 		$distance = $params['distance'] ?? null;
 		$addressCity = $params['city'] ?? null;
 		$name = $params['name'] ?? null;
-		$userIdMatchingVenuesIds = [];
 
 		Log::info(json_encode($params));
 
@@ -187,7 +186,10 @@ class Venue extends VenueModel implements JsonSerializable {
 
 		if (!is_null( $userId )) {
 
-			// TODO : Get $userIdMatchingVenuesIds
+			$query->whereIn('venues.id',
+				UserVenue::search(['user_id', $userId])->items->map(function($item){
+				return $item->venue_id;
+			}));
 
 		}
 

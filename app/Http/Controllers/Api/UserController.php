@@ -68,7 +68,7 @@ class UserController extends ApiBase
 	 */
     public function getUsersQuery(UsersQuery $request) {
 
-	    $params = $request->only('role', 'skip', 'take');
+	    $params = $request->validated();
 
 	    $users = User::search( $params );
 

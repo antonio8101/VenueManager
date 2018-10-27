@@ -51,10 +51,14 @@ class UserVenue extends UserVenueModel {
 
 		$model = UserModel::where($key, $value)->first();
 
+		if (is_null($model))
+			return null;
+
 		$userVenue = new UserVenue();
 		$userVenue->user= User::find( $model->user_id );
 		$userVenue->venue = Venue::find( $model->venue_id );
 
+		return $userVenue;
 	}
 
 	/**
@@ -68,7 +72,7 @@ class UserVenue extends UserVenueModel {
 
 		$take = $params['take'] ?? 0;
 
-		$query = UserModel::where('id', '>', 0);
+		$query = UserVenue::where('id', '>', 0);
 
 		if (isset($params['user_id']))
 			$query->where('user_id', $params['user_id']);

@@ -264,14 +264,14 @@ class User extends UserModel implements JsonSerializable {
 	 */
 	public static function search( $params = array() ){
 
-		$skip  = $params['skip'] ?? 0;
-		$take  = $params['take'] ?? 100;
-		$roles = [];
+		$skip     = $params['skip'] ?? 0;
+		$take     = $params['take'] ?? 100;
+		$venue_id = $params['venue_id'] ?? null;
+		$roles    = [];
 
 		// search users for venue id
 
-		$query = UserModel::where( 'id', '>', 0 )
-		                  ->where('active', 1)
+		$query = UserModel::where( 'id', '>', 0 )->where('active', 1)
 		                  ->where( function ( $query ) use ( $params, $roles ) {
 
 			                  if (isset($params['role'])) {
@@ -286,6 +286,17 @@ class User extends UserModel implements JsonSerializable {
 			                  }
 
 		                  } );
+
+		if (!is_null($venue_id)){
+
+
+			$ids = UserVenue::search(['venue_id' => $venue_id])->items->map(function ($item){
+				return $item->user_id;
+			});
+
+			$query->whereIn('id', $ids);
+
+		}
 
 		$results = $query
 			->skip( $skip )
