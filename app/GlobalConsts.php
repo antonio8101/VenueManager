@@ -12,6 +12,7 @@ namespace App;
 class GlobalConsts {
 
 	const __APP_DEBUG = true;
+	const __APP_NAME__ = "VenueManager";
 	const __PASSWORD_MIN_LENGTH__ = 8;
 	const __ADMIN_ROLE__ = 'Admin';
 	const __SUPERVISOR_ROLE__ = 'SuperVisor';

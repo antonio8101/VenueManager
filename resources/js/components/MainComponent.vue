@@ -3,10 +3,16 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card card-default">
-                    <div class="card-header">Example Component</div>
+                    <div class="card-header">
+                        <a href="/logout">Logout</a>
+                    </div>
+
+                    <div class="card-header">
+                        Title
+                    </div>
 
                     <div class="card-body">
-                        I'm an example component.
+                        Component content
                     </div>
                 </div>
             </div>

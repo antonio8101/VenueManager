@@ -8,6 +8,7 @@
 
     <!-- page title -->
     <title>{{ strtoupper( $appName )  }}</title>
+    <link href="{{mix('css/app.css')}}" rel="stylesheet" type="text/css">
     <!-- /page title -->
 
 </head>
@@ -24,7 +25,7 @@
 <!-- /js assets -->
 
 <!-- main js code -->
-{{--<script src="{{ url( $assetsRootFolder . 'js/main.js') }}?{{ $refresh_id }}"></script>--}}
+<script src="{{ mix( 'js/app.js' ) }}?{{ $refresh_id }}"></script>
 
 </body>
 </html>

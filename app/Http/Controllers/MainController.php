@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\GlobalConsts;
 use App\Models\LoginTable;
 use App\Exceptions\SessionExpiredException;
 use App\Models\User;
@@ -16,34 +17,41 @@ class MainController extends Controller
 	const LOGIN_ROOT_VIEW_FOLDER = "login_views";
 
 	/**
-	 * Route main view
+	 *
 	 * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
 	 */
 	public function index() {
 
-		if ( Auth::check() ) {
-
-			$user = User::find( Auth::id() );
-
-			$userToken = $this->getUserToken( $user );
-
-			if (is_null( $userToken ))
-				return redirect('/login');
-
-			$headers = [];
-
-			$cookie = cookie( 'ss_tok', $userToken, 120);
-
-			return response(view( self::APP_VIEW_NAME,
-				[
-					'appName'    => 'test',
-					'refresh_id' => 'v=' . rand( 0, 99999 )
-				]
-			), 200, $headers)->cookie($cookie);
-
-		}
+		if ( Auth::check() )
+			return redirect('/app');
 
 		return redirect( '/login' );
+	}
+
+	/**
+	 * Application main view
+	 * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 */
+	public function app() {
+
+		$user = User::find( Auth::id() );
+
+		$userToken = $this->getUserToken( $user );
+
+		if (is_null( $userToken ))
+			return redirect('/login');
+
+		$headers = [];
+
+		$cookie = cookie( 'ss_tok', $userToken, 120);
+
+		return response(view( self::APP_VIEW_NAME,
+			[
+				'appName'    => GlobalConsts::__APP_NAME__,
+				'refresh_id' => 'v=' . rand( 0, 99999 )
+			]
+		), 200, $headers)->cookie($cookie);
+
 	}
 
 	/**
@@ -73,7 +81,9 @@ class MainController extends Controller
 
 		$user->logout();
 
-		return $this->buildView( self::LOGIN_ROOT_VIEW_FOLDER, __FUNCTION__ );
+		//return $this->buildView( self::LOGIN_ROOT_VIEW_FOLDER, __FUNCTION__ );
+
+		return redirect('/');
 
 	}
 

@@ -2,7 +2,8 @@
 
 @section('content')
 
-    Finally User Logged in. <br />
-    Here goes the application content
+    <div id="app">
+        <main-component></main-component>
+    </div>
 
 @stop

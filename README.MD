@@ -3,7 +3,7 @@ Test Application built with Laravel to Manage Venues
 
 This application allows to build a set of Users and Venues and create "relations" between them.
 The applications uses :
-- `Laravel` Web Application Framework, for the backend.
+- `Laravel 5.7` Web Application Framework, for the backend.
 - `VueJs` as Javascript Framework
 - `MySQL` as Database (of course it depends from the configuration)
 

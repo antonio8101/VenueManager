@@ -11,10 +11,19 @@
 |
 */
 
+
+
 /** AUTH */
 Route::get( '/', 'MainController@index' );
 Route::get( '/login', 'MainController@login' )->name( 'login' );
 Route::get( '/logout', 'MainController@logout' )->name( 'logout' );
+
+/** WEBAPP */
+/** ROUTE - GRANTED TO HTML/JS APPLICATION */
+Route::any('/app', 'MainController@app')->where(['all','.*']);
+Route::any('/app/{all}', 'MainController@app')->where(['all','.*']);
+Route::any('/app/{all}/{all_all}', 'MainController@app')->where(['all_all','.*']);
+Route::any('/app/{all}/{all_all}/{all_all_all}', 'MainController@app')->where(['all_all_all','.*']);
 
 /** API */
 Route::any( '/api/login', 'AuthController@login' )->name( 'loginAttempt' );
