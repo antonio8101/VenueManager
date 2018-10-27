@@ -27,7 +27,7 @@ class UserVenue extends UserVenueModel {
 	 */
 	public static function create( User $user, Venue $venue ): string {
 
-		$model = UserModel::where( 'user_id', $user->id )->where( 'venue_id', $venue->id )->first() ??
+		$model = UserVenueModel::where( 'user_id', $user->id )->where( 'venue_id', $venue->id )->first() ??
 		         UserVenueModel::create( [
 			         'user_id'  => $user->id,
 			         'venue_id' => $venue->id

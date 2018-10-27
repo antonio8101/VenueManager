@@ -7,6 +7,8 @@ use App\Http\Requests\DeleteUserVenueCommand;
 use App\Models\User;
 use App\Models\UserVenue;
 use App\Models\UserVenueModel;
+use App\Models\Venue;
+use Illuminate\Http\Request;
 
 
 class UserVenueController extends ApiBase

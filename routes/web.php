@@ -32,3 +32,7 @@ Route::any( '/api/venue/search', 'Api\VenueController@getVenuesQuery' )->name('V
 Route::any( '/api/venue/create', 'Api\VenueController@createVenueCommand' )->name('CreateVenueCommand');
 Route::any( '/api/venue/edit', 'Api\VenueController@editVenueCommand' )->name('EditVenueCommand');
 Route::any( '/api/venue/delete', 'Api\VenueController@deleteVenueCommand' )->name('DeleteVenueCommand');
+
+/** API USER VENUE */
+Route::any( '/api/uservenue/create', 'Api\UserVenueController@createUserVenueRelationCommand' )->name('CreateUserVenueCommand');
+Route::any( '/api/uservenue/delete', 'Api\UserVenueController@deleteUserVenueRelationCommand' )->name('DeleteUserVenueCommand');
