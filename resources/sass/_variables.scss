@@ -1,13 +1,16 @@
 
-// Body
-$body-bg: #f8fafc;
-
 // Typography
-$font-family-sans-serif: "Nunito", sans-serif;
+$font-family-sans-serif: "Lato", sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
+// Shadows
+$border-bottom-shadow: -3px 6px 25px #00000054;
+$border-left-shadow: -10px 0px 10px 1px #00000054;
+
 // Colors
+$main-app-color: #16AA8C;
+$main-app-light-color: #B1EAD5;
 $blue: #3490dc;
 $indigo: #6574cd;
 $purple: #9561e2;
@@ -18,3 +21,18 @@ $yellow: #ffed4a;
 $green: #38c172;
 $teal: #4dc0b5;
 $cyan: #6cb2eb;
+
+// Media Queries provided by bootstrap
+// UP
+//@include media-breakpoint-up(xs) { ... }
+//@include media-breakpoint-up(sm) { ... }
+//@include media-breakpoint-up(md) { ... }
+//@include media-breakpoint-up(lg) { ... }
+//@include media-breakpoint-up(xl) { ... }
+// DOWN
+//@include media-breakpoint-down(xs) { ... }
+//@include media-breakpoint-down(sm) { ... }
+//@include media-breakpoint-down(md) { ... }
+//@include media-breakpoint-down(lg) { ... }
+//@include media-breakpoint-down(xl) { ... }
+// IN

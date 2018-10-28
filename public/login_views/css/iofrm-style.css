@@ -36,12 +36,16 @@
     }
 }
 
+#main-content {
+    height: 100%;
+}
 #main-content.appear{
     animation: 1s ease-out 0s 1 appearOnLoad;
 }
 
 html, body {
     height: 100%;
+    background-color: #78d1b5;
 }
 
 .form-body {

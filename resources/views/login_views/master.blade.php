@@ -17,7 +17,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url( $assetsRootFolder . 'css/iofrm-theme10.css' ) }}?{{ $refresh_id }}">
     <!-- css assets -->
 </head>
-<body style="background-color: #57cba6cc;">
+<body>
 
 <div id="main-content" class="appear">
     @yield('content')

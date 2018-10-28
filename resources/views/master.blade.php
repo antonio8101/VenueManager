@@ -8,11 +8,12 @@
 
     <!-- page title -->
     <title>{{ strtoupper( $appName )  }}</title>
-    <link href="{{mix('css/app.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{mix('css/app.css')}}?{{ $refresh_id }}" rel="stylesheet" type="text/css">
+    <link href="{{url('css/fontawesome-all.min.css')}}" rel="stylesheet" type="text/css">
     <!-- /page title -->
 
 </head>
-<body style="background-color: #57cba6cc;">
+<body>
 
 <div id="main-content" class="appear">
     @yield('content')

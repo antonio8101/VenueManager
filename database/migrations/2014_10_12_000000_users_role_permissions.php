@@ -114,6 +114,7 @@ class UsersRolePermissions extends Migration
     public function down()
     {
 	    Schema::dropIfExists('login_table');
+	    Schema::dropIfExists('users_venues');
 	    Schema::dropIfExists('users');
 	    Schema::dropIfExists('roles_permissions');
 	    Schema::dropIfExists('roles');
