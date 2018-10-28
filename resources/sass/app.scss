@@ -59,6 +59,7 @@ nav {
 }
 
 #venue-list-component {
+
   #venue-list-component-title {
     padding: 0;
     text-align: center;
@@ -103,20 +104,34 @@ nav {
   .search-bar input[type=text]:focus{
     outline: none;
   }
-
   #venue-list-component-uplist{
     height: 40vh;
     background-color: white;
     position: relative;
   }
-
   #venue-list-component-list{
     height: 60vh;
     .list-group {
       height: 60vh;
     }
   }
+  #venue-list-component-list {
 
+    .list-group{
+      overflow-y: scroll;
+    }
+    .list-group-item {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+    a {
+      padding-left: 70px;
+      color: $main-app-color;
+    }
+
+  }
+
+  // Component screen behaviours
   @media (min-height: 1080px){
     #venue-list-component-title {
       top: 7vh;
@@ -157,53 +172,34 @@ nav {
     display: none;
   }
 
+  i {
+    color: $main-app-light-color !important;
+  }
+  .circle-icon {
+    background: #16AA8C;
+    color: #B1EAD5 !important;
+    font-size: 4px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    text-align: center;
+    padding: 9px 6px;
+    position: absolute;
+    top: 15px;
+    left: 16px;
+  }
 
-  #venue-list-component-list {
-
-    .list-group{
-      overflow-y: scroll;
-    }
-    .list-group-item {
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-    }
-    a {
-      padding-left: 70px;
-      color: $main-app-color;
-    }
-
+  // Scrollbar
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px white;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: $main-app-color;
+    border-radius: 10px;
   }
 }
 
-
-
-i{
-  color: $main-app-light-color !important;
-}
-.circle-icon {
-  background: #16AA8C;
-  color: #B1EAD5 !important;
-  font-size: 4px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  text-align: center;
-  padding: 9px 6px;
-  position: absolute;
-  top: 15px;
-  left: 16px;
-}
-
-
-// Scrollbar
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px white;
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb {
-  background: $main-app-color;
-  border-radius: 10px;
-}

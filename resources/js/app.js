@@ -6,6 +6,7 @@
  */
 
 import Vue from 'vue'
+import Vuex from 'vuex'
 import * as VueGoogleMaps from 'vue2-google-maps'
 //import BootstrapVue from 'bootstrap-vue'
 //import 'bootstrap/dist/css/bootstrap.css'
@@ -49,8 +50,25 @@ Vue.use(VueGoogleMaps, {
     //// then disable the following:
     /** installComponents: true */
 });
+Vue.use(Vuex);
 
+const store = new Vuex.Store({
+    state: {
+        count: 0,
+        user: {}
+    },
+    mutations: {
+        increment (state) {
+            state.count++
+        },
+        setUser (state, user) {
+            state.user = user;
+        }
+
+    }
+});
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    store,
 });

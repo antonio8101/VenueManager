@@ -10586,6 +10586,20 @@ nav .nav-link {
   height: 60vh;
 }
 
+#venue-list-component #venue-list-component-list .list-group {
+  overflow-y: scroll;
+}
+
+#venue-list-component #venue-list-component-list .list-group-item {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+#venue-list-component #venue-list-component-list a {
+  padding-left: 70px;
+  color: #16AA8C;
+}
+
 @media (min-height: 1080px) {
   #venue-list-component #venue-list-component-title {
     top: 7vh;
@@ -10638,25 +10652,11 @@ nav .nav-link {
   }
 }
 
-#venue-list-component #venue-list-component-list .list-group {
-  overflow-y: scroll;
-}
-
-#venue-list-component #venue-list-component-list .list-group-item {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-
-#venue-list-component #venue-list-component-list a {
-  padding-left: 70px;
-  color: #16AA8C;
-}
-
-i {
+#venue-list-component i {
   color: #B1EAD5 !important;
 }
 
-.circle-icon {
+#venue-list-component .circle-icon {
   background: #16AA8C;
   color: #B1EAD5 !important;
   font-size: 4px;
@@ -10670,17 +10670,17 @@ i {
   left: 16px;
 }
 
-::-webkit-scrollbar {
+#venue-list-component ::-webkit-scrollbar {
   width: 10px;
 }
 
-::-webkit-scrollbar-track {
+#venue-list-component ::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 5px white;
           box-shadow: inset 0 0 5px white;
   border-radius: 10px;
 }
 
-::-webkit-scrollbar-thumb {
+#venue-list-component ::-webkit-scrollbar-thumb {
   background: #16AA8C;
   border-radius: 10px;
 }
