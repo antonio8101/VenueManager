@@ -63,7 +63,7 @@ class LoginTable extends LoginTableModel implements JsonSerializable {
 	 * @return LoginTable
 	 * @throws Exception
 	 */
-	public static function findBy( string $key, string $value ) : LoginTable {
+	public static function findBy( string $key, $value = "" ) : LoginTable {
 
 		$model = LoginTableModel::where( $key, $value )->where('active', 1)->first();
 
