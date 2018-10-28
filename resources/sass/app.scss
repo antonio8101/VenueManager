@@ -117,6 +117,14 @@ nav {
   }
   #venue-list-component-list {
 
+    .no-results {
+
+      text-align: center;
+      font-size: 25px;
+      margin-top: 20px;
+
+    }
+
     .list-group{
       overflow-y: scroll;
     }

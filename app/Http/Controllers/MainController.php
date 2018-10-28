@@ -48,7 +48,8 @@ class MainController extends Controller
 		return response(view( self::APP_VIEW_NAME,
 			[
 				'appName'    => GlobalConsts::__APP_NAME__,
-				'refresh_id' => 'v=' . rand( 0, 99999 )
+				'refresh_id' => 'v=' . rand( 0, 99999 ),
+				'session_token' => $userToken
 			]
 		), 200, $headers)->cookie($cookie);
 
@@ -121,9 +122,14 @@ class MainController extends Controller
 	 *
 	 * @return mixed|null
 	 */
-	protected function getUserToken( User $user ) {
+	protected function getUserToken( User $user = null ) {
+
+
 
 		try {
+
+			if (is_null($user))
+				throw new SessionExpiredException("No Active tokens for the given User");
 
 			$token = $user->token();
 

@@ -157,7 +157,11 @@ class User extends UserModel implements JsonSerializable {
 	 *
 	 * @return User
 	 */
-	public static function find(string $id) {
+	public static function find( $id ) {
+
+		if (is_null($id))
+			return null;
+
 
 		$model = UserModel::find($id);
 

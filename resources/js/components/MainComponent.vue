@@ -7,6 +7,7 @@
                 <users v-if="visible==='users'"></users>
             </div>
         </div>
+        <UserDataLoaderComponent></UserDataLoaderComponent>
     </div>
 </template>
 
@@ -15,6 +16,7 @@
     import NavBar from "./NavBarComponent";
     import Venues from "./VenuesComponent";
     import Users from "./UsersComponent";
+    import UserDataLoaderComponent from "./dataComponents/UserDataLoaderComponent";
 
     export default {
         mounted() {
@@ -33,7 +35,8 @@
         components: {
             NavBar,
             Venues,
-            Users
+            Users,
+            UserDataLoaderComponent
         }
     }
 </script>

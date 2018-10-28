@@ -10586,6 +10586,12 @@ nav .nav-link {
   height: 60vh;
 }
 
+#venue-list-component #venue-list-component-list .no-results {
+  text-align: center;
+  font-size: 25px;
+  margin-top: 20px;
+}
+
 #venue-list-component #venue-list-component-list .list-group {
   overflow-y: scroll;
 }

@@ -8,6 +8,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as VueGoogleMaps from 'vue2-google-maps'
+import { PulseLoader } from 'vue-spinner/dist/vue-spinner.min.js'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+import VueCookies from 'vue-cookies'
+
+Vue.use(VueCookies);
+Vue.use(VueAxios,axios);
 //import BootstrapVue from 'bootstrap-vue'
 //import 'bootstrap/dist/css/bootstrap.css'
 //import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -51,11 +58,26 @@ Vue.use(VueGoogleMaps, {
     /** installComponents: true */
 });
 Vue.use(Vuex);
+const sessionToken = function () {
 
+    const metaName = 'ss-token';
+    const metas = document.getElementsByTagName('meta');
+
+    for (let i = 0; i < metas.length; i++) {
+        if (metas[i].getAttribute('name') === metaName) {
+            return metas[i].getAttribute('content');
+        }
+    }
+
+    return '';
+} ();
+
+// Store
 const store = new Vuex.Store({
     state: {
         count: 0,
-        user: {}
+        user: {},
+        sessionToken : sessionToken
     },
     mutations: {
         increment (state) {
@@ -68,7 +90,12 @@ const store = new Vuex.Store({
     }
 });
 
+
+
 const app = new Vue({
     el: '#app',
     store,
+    sessionToken : "Fuck"
 });
+
+
