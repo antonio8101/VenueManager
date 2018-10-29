@@ -1,7 +1,7 @@
 <template>
     <div id="venues_component" class="extend-to-all-viewport">
         <map-component></map-component>
-        <venues-list-component :list="venues"></venues-list-component>
+        <venues-list-component :list="venues" :is-loading="loading"></venues-list-component>
     </div>
 </template>
 
@@ -23,11 +23,7 @@
             getUserVenues : function() {
 
                 this.loading = true;
-
                 const userId = this.$store.state.user.id;
-
-
-
                 const context = this;
 
                 const instance =  this.$root.axios.create({

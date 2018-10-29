@@ -12562,9 +12562,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         getUserVenues: function getUserVenues() {
 
             this.loading = true;
-
             var userId = this.$store.state.user.id;
-
             var context = this;
 
             var instance = this.$root.axios.create({
@@ -15605,7 +15603,9 @@ var render = function() {
     [
       _c("map-component"),
       _vm._v(" "),
-      _c("venues-list-component", { attrs: { list: _vm.venues } })
+      _c("venues-list-component", {
+        attrs: { list: _vm.venues, "is-loading": _vm.loading }
+      })
     ],
     1
   )
