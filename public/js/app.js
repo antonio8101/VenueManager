@@ -624,6 +624,13 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         setUser: function setUser(state, user) {
             state.user = user;
         }
+    },
+    getters: {
+        getUser: function getUser(state) {
+            return function () {
+                return state.user;
+            };
+        }
     }
 });
 
@@ -12545,10 +12552,52 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     name: "VenuesComponent",
     data: function data() {
         return {
-            //
+            userId: null,
+            venues: [],
+            loading: false
         };
     },
 
+    methods: {
+        getUserVenues: function getUserVenues() {
+
+            this.loading = true;
+
+            var userId = this.$store.state.user.id;
+
+            var context = this;
+
+            var instance = this.$root.axios.create({
+                baseURL: '/',
+                timeout: 5000,
+                headers: { 'Authorization': 'Bearer ' + this.$store.state.sessionToken }
+            });
+
+            return instance.post('api/venue/search', {
+                'user_id': userId
+            }).then(function (response) {
+                context.venues = response.data.data.items;
+                context.loading = false;
+            }).catch(function (error) {
+                console.log("Errore" + error);
+                context.loading = false;
+            });
+        }
+    },
+    created: function created() {
+        var _this = this;
+
+        console.log("retrieving user venues");
+
+        this.$store.watch(this.$store.getters.getUser, function (user) {
+            _this.userId = user.id;
+            _this.getUserVenues();
+        });
+    },
+
+    watch: {
+        userId: function userId(v) {}
+    },
     components: {
         MapComponent: __WEBPACK_IMPORTED_MODULE_0__venuesComponents_MapComponent_vue___default.a,
         VenuesListComponent: __WEBPACK_IMPORTED_MODULE_1__venuesComponents_VenuesListComponent_vue___default.a
@@ -15553,7 +15602,11 @@ var render = function() {
       staticClass: "extend-to-all-viewport",
       attrs: { id: "venues_component" }
     },
-    [_c("map-component"), _vm._v(" "), _c("venues-list-component")],
+    [
+      _c("map-component"),
+      _vm._v(" "),
+      _c("venues-list-component", { attrs: { list: _vm.venues } })
+    ],
     1
   )
 }
@@ -15714,10 +15767,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "VenuesListComponent",
     components: { PulseLoader: __WEBPACK_IMPORTED_MODULE_0_vue_spinner_src_PulseLoader___default.a },
+    props: {
+        list: Array,
+        isLoading: true
+    },
     data: function data() {
         return {
             venues: [],
-            loading: false,
+            loading: true,
             color: "#16AA8C",
             size: "15px"
         };
@@ -15734,6 +15791,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$store.commit('increment');
             console.log('incremented store ' + this.$store.state.count);
             console.log(this.$store.state.user);
+        }
+    },
+    watch: {
+        list: function list(items) {
+            this.venues = items;
+        },
+        isLoading: function isLoading(isLoad) {
+            this.loading = isLoad;
         }
     },
     created: function created() {
@@ -15792,7 +15857,7 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c("small", { staticClass: "text-muted" }, [
-                      _vm._v(_vm._s(venue.address.description))
+                      _vm._v(_vm._s(venue.address.city))
                     ])
                   ]
                 )
@@ -15801,7 +15866,7 @@ var render = function() {
           : _vm.loading
             ? _c(
                 "div",
-                { staticClass: "no-results" },
+                { staticStyle: { padding: "40px" } },
                 [
                   _c("PulseLoader", {
                     attrs: {
@@ -17141,7 +17206,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var instance = this.$root.axios.create({
                 baseURL: '/',
-                timeout: 1000,
+                timeout: 5000,
                 headers: { 'Authorization': 'Bearer ' + this.$store.state.sessionToken }
             });
 

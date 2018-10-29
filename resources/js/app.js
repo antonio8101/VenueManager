@@ -87,6 +87,9 @@ const store = new Vuex.Store({
             state.user = user;
         }
 
+    },
+    getters: {
+        getUser: state => () => state.user
     }
 });
 

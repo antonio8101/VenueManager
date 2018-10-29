@@ -21,10 +21,10 @@
                             <h5 class="mb-1">{{venue.name}}</h5>
                             <!--<small class="text-muted">30 operatori</small>-->
                         </div>
-                        <small class="text-muted">{{venue.address.description}}</small>
+                        <small class="text-muted">{{venue.address.city}}</small>
                     </a>
                 </div>
-                <div class="no-results" v-else-if="loading">
+                <div v-else-if="loading" style="padding: 40px">
                     <PulseLoader :loading="loading" :color="color" :size="size"></PulseLoader>
                 </div>
                 <div class="no-results" v-else>
@@ -40,10 +40,14 @@
     export default {
         name: "VenuesListComponent",
         components: {PulseLoader},
+        props: {
+            list: Array,
+            isLoading: true
+        },
         data() {
           return {
               venues : [],
-              loading : false,
+              loading : true,
               color : "#16AA8C",
               size : "15px"
           }
@@ -60,6 +64,14 @@
                 console.log('incremented store ' +  this.$store.state.count);
                 console.log(this.$store.state.user);
             }
+        },
+        watch : {
+          list : function(items){
+              this.venues = items;
+          },
+          isLoading : function(isLoad){
+              this.loading = isLoad;
+          }
         },
         created(){
             console.log("Venues list component knows about store : " + this.$store.state.count);
