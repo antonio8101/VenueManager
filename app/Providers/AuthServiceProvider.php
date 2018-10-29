@@ -40,27 +40,35 @@ class AuthServiceProvider extends ServiceProvider
 
 	protected function setAuthorizations(): void {
 
-    	$systemDefinedPermissions = PermissionModel::all()->map( function ( $p ) {
-			return $p->name;
-		} );
+    	try{
 
-		foreach ( $systemDefinedPermissions as $p ) {
+		    $systemDefinedPermissions = PermissionModel::all()->map( function ( $p ) {
+			    return $p->name;
+		    } );
 
-			Gate::define( $p, function ( $user ) use ( $p ) {
+		    foreach ( $systemDefinedPermissions as $p ) {
 
-				$role = User::find( $user->id )->role;
+			    Gate::define( $p, function ( $user ) use ( $p ) {
 
-				$permissions = $role->permissions->map( function ( $permission ) {
+				    $role = User::find( $user->id )->role;
 
-					return $permission->name;
+				    $permissions = $role->permissions->map( function ( $permission ) {
 
-				} );
+					    return $permission->name;
 
-				return $permissions->contains( $p );
+				    } );
 
-			} );
+				    return $permissions->contains( $p );
 
-		}
+			    } );
+
+		    }
+	    } catch (Exception $exception) {
+
+    		Log::warning("AuthServiceProvider : no permission checks");
+
+	    }
+
 	}
 
 	protected function setAuthentication(): void {
